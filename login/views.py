@@ -25,7 +25,7 @@ def login_view(request):
     # if method is GET render login page else authenticate user
     if request.method == "GET":
        loginform = LoginForm()
-       return render(request, 'home.html', {'loginform': loginform})
+       return render(request, 'login.html', {'loginform': loginform})
 
     if request.method == 'POST':
         form = LoginForm(request.POST)
@@ -41,6 +41,7 @@ def login_view(request):
                 if not UserLogin.objects.filter(password=pwd):
                     return render(request,'login.html',{'msg':"密码错误！"})
                 else:
+                    UserLogin.objects.create(username = name , password = pwd)
                     user = authenticate(username = name,
                                         password = pwd)
                     login(request,user)
