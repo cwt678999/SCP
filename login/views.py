@@ -15,13 +15,8 @@ def hash_code(s, salt='mysite'):  # 加点盐
     h.update(s.encode())  # update方法只接收bytes类型
     return h.hexdigest()
 
-
-
 def login_view(request):
     # if user is already logged in go to home page
-    if request.user.is_authenticated():
-        return redirect("home_url")
-
     # if method is GET render login page else authenticate user
     if request.method == "GET":
        loginform = LoginForm()
@@ -41,7 +36,6 @@ def login_view(request):
                 if not UserLogin.objects.filter(password=pwd):
                     return render(request,'login.html',{'msg':"密码错误！"})
                 else:
-                    UserLogin.objects.create(username = name , password = pwd)
                     user = authenticate(username = name,
                                         password = pwd)
                     login(request,user)
