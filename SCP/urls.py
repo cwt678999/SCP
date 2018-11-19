@@ -21,4 +21,5 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^login/', views.login_view),
     url(r'^captcha', include('captcha.urls')),
+    url(r'^usercenter', include('user_center.urls')),
 ]
