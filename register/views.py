@@ -18,7 +18,7 @@ def register(request):
         return render(request,"register.html",{'registerform':registerform})
 
     if request.method == 'POST':
-        registerform = RegisterForm()
+        registerform = RegisterForm(request.POST)
 
         if registerform.is_valid():
             name = registerform.cleaned_data['username']
