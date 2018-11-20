@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
+from django.views.decorators.csrf import csrf_exempt,csrf_protect #Add this
 
 from login.forms import LoginForm
 from .models import UserLogin
@@ -15,12 +16,13 @@ def hash_code(s, salt='mysite'):  # 加点盐
     h.update(s.encode())  # update方法只接收bytes类型
     return h.hexdigest()
 
+@csrf_exempt
 def login_view(request):
     # if user is already logged in go to home page
     # if method is GET render login page else authenticate user
     if request.method == "GET":
-       loginform = LoginForm()
-       return render(request, 'login.html', {'loginform': loginform})
+        loginform = LoginForm()
+        return render(request, 'login.html', {'loginform': loginform})
 
     if request.method == 'POST':
         form = LoginForm(request.POST)
@@ -38,9 +40,11 @@ def login_view(request):
                 else:
                     user = authenticate(username = name,
                                         password = pwd)
-                    login(request,user)
+                    login(request, user)
                     login_user = UserLogin.objects.get(username = name)
                     request.session['type'] = login_user.type
+                    request.session['username'] = name
+                    request.session['islogin'] = 1
 
                     return render(request,'home.html')
 
