@@ -39,6 +39,9 @@ def login_view(request):
                     user = authenticate(username = name,
                                         password = pwd)
                     login(request,user)
+                    login_user = UserLogin.objects.get(username = name)
+                    request.session['type'] = login_user.type
+
                     return render(request,'home.html')
 
         else:

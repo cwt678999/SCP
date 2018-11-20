@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.contrib.auth.models import User
 from .forms import RegisterForm
 from .models import CompetitorInfo,OrganizerInfo
 from login.models import UserLogin
@@ -24,7 +25,7 @@ def register(request):
             pwd1 = registerform.cleaned_data['password1']
             pwd2 = registerform.cleaned_data['password2']
             email = registerform.cleaned_data['email']
-            type = registerform.cleaned_data['type']
+            user_type = registerform.cleaned_data['type']
             if UserLogin.objects.filter(username = name ):
                 return render(request, "register.html", {'registerform': registerform,
                                                          'msg':"此用户名已存在"})
@@ -36,7 +37,8 @@ def register(request):
                                                        'msg':"两次输入的密码不一致！"})
             else:
                 pwd = hash_code(pwd1)
-                UserLogin.objects.create(username = name, password = pwd)
+                User.objects.create(username = name, password = pwd)
+                UserLogin.objects.create(username = name, password = pwd, type = user_type)
 
         else:
             return render(request,"register.html",{'registerform':registerform,
