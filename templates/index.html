@@ -53,8 +53,8 @@
   </div>
 {% if request.session.is_login %}
   <div class="col-lg-2">
-    <button type="button" class="btn btn-lg btn-primary" style="width:40%">登录</button>
-	<button type="button" class="btn btn-lg btn-secondary" style="width:40%">注册</button>
+    <a href="/login/"><button type="button" class="btn btn-lg btn-primary" style="width:40%">登录</button></a>
+	<a href="/register/"><button type="button" class="btn btn-lg btn-secondary" style="width:40%">注册</button></a>
   </div>
   <div class="col-lg-1"></div>
 {% else %}
