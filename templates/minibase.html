@@ -39,34 +39,6 @@
     <img src="{% static 'images/test.jpg' %}" width="100%" height="100%" alt="返回首页"/>
   </a>
 </div>
-<div class="row">
-  <div class="col-lg-5">
-    <div class="btn-group" role="group">
-	  <button type="button" class="btn btn-lg btn-info">赛事</button>
-	  <button type="button" class="btn btn-lg btn-info">新闻</button>
-	  <button type="button" class="btn btn-lg btn-info">队伍</button>
-	  <button type="button" class="btn btn-lg btn-info">讨论</button>
-	  <button type="button" class="btn btn-lg btn-info">关于</button>
-    </div>
-  </div>
-  <div class="col-lg-4">
-	<form class="form-inline my-2 my-lg-0">
-	  <input class="form-control mr-sm-3" type="search" placeholder="请输入关键词" aria-label="Search">
-	  <button class="btn btn-lg btn-outline-success my-2 my-sm-0" type="submit">搜索</button>
-    </form>
-  </div>
-{% if request.session.is_login %}
-  <div class="col-lg-2">
-    <a href="/login/"><button type="button" class="btn btn-lg btn-primary" style="width:40%">登录</button></a>
-	<a href="/register/"><button type="button" class="btn btn-lg btn-secondary" style="width:40%">注册</button></a>
-  </div>
-  <div class="col-lg-1"></div>
-{% else %}
-  <div class="col-lg-3">
-    <button type="button" class="btn btn-lg btn-primary" style="width:100%">占位子用的</button>
-  </div>
-{% endif %}
-</div>
 {% block menu %}{% endblock %}
 {% block content %}{% endblock %}
 <script src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
