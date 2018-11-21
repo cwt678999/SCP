@@ -44,7 +44,7 @@ def login_view(request):
                     login_user = UserLogin.objects.get(username = name)
                     request.session['type'] = login_user.type
                     request.session['username'] = name
-                    request.session['islogin'] = 1
+                    request.session['is_login'] = 1
 
                     return render(request,'home.html')
 
