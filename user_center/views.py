@@ -26,29 +26,30 @@ def user_center_redirect(request):
 
 @login_required
 def competitor_info(request):
-    user_type = request.session['type']
-    if user_type != 'C':
-        resp = {'errorcode': 1, 'msg': 'no permission'}
-        return HttpResponse(json.dumps(resp), content_type="application/json")
     if request.method == 'GET':
-        usn = request.user.username
-        try:
-            user = OrganizerInfo.objects.get(name = usn)
-        except:
+        user_type = request.session['type']
+        if user_type != 'C':
+            resp = {'errorcode': 1, 'msg': 'no permission'}
+            return HttpResponse(json.dumps(resp), content_type="application/json")
+        if request.method == 'GET':
+            usn = request.user.username
+            try:
+                user = OrganizerInfo.objects.get(name = usn)
+            except:
+                return render(request, 'user_center_info_competitor.html',
+                              {
+                                  'errorcode': 1,
+                                  'msg': 'User not found.',
+                              })
+            info = dict()
+            info['email'] = user.email
+            info['username'] = user.name
             return render(request, 'user_center_info_competitor.html',
-                          {
-                              'errorcode': 1,
-                              'msg': 'User not found.',
-                          })
-        info = dict()
-        info['email'] = user.email
-        info['username'] = user.name
-        return render(request, 'user_center_info_competitor.html',
-                          {
-                              'errorcode': 0,
-                              'info': info,
-                              'msg': 'Success.',
-                          })
+                              {
+                                  'errorcode': 0,
+                                  'info': info,
+                                  'msg': 'Success.',
+                              })
 
 @login_required
 def organizer_info(request):
