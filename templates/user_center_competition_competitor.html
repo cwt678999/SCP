@@ -1,7 +1,12 @@
-{% extends 'base.html' %}
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="css/bootstrap-4.0.0.css" rel="stylesheet" type="text/css">
+{% extends 'cbase.html' %}
 {% load staticfiles %}
-{% block title %}注册{% endblock %}
+{% block title %}用户-我的竞赛{% endblock %}
 {% block content %}
+{% if request.session.is_login %}
+{% ifequal request.session.type "C" %}
 <ul>
 {% for item in competitionlist %}
   <div id="competition" style="border-style: inset">
@@ -20,4 +25,9 @@
   </div>
 {% endfor %}
 </ul>
+{% endifequal %}
+{% endif %} 
 {% endblock %}
+<script src="js/jquery-3.2.1.min.js"></script>
+<script src="js/popper.min.js"></script>
+<script src="js/bootstrap-4.0.0.js"></script>

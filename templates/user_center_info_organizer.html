@@ -1,9 +1,6 @@
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link href="css/bootstrap-4.0.0.css" rel="stylesheet" type="text/css">
 {% extends 'cbase.html' %}
 {% load staticfiles %}
-{% block title %}用户-我的信息{% endblock %}
+{% block title %}主办方-个人信息{% endblock %}
 {% block content %}
 {% if request.session.is_login %}
 {% ifequal request.session.type "C" %}
@@ -38,6 +35,3 @@
 {% endifequal %}
 {% endif %} 
 {% endblock %}
-<script src="js/jquery-3.2.1.min.js"></script>
-<script src="js/popper.min.js"></script>
-<script src="js/bootstrap-4.0.0.js"></script>
