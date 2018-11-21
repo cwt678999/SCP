@@ -6,17 +6,15 @@
 {% ifequal request.session.type "organizer" %}
 <div class="row">
   <div class="col-lg-3">
-	<div class="btn-group" role="group">
     <a href="/usercenter/info/">
 		<button type="button" class="btn btn-lg btn-info btn-block">个人信息</button>
-	  </a><a href="/usercenter/mycompetition/">
+	  </a><br><a href="/usercenter/mycompetition/">
 		<button type="button" class="btn btn-lg btn-info btn-block">我的竞赛</button>
-	  </a><a href="/usercenter/findteam/">
+	  </a><br><a href="/usercenter/findteam/">
 		<button type="button" class="btn btn-lg btn-info btn-block" disabled="disabled">申请审核</button>
-	  </a><a href="/usercenter/manage/">
+	  </a><br><a href="/usercenter/manage/">
 		<button type="button" class="btn btn-lg btn-info btn-block" disabled="disabled">管理评委</button>
-		</a>
-    </div>
+		</a><br>
   </div>
 </div>
 {% endifequal %}
