@@ -4,26 +4,26 @@
 {% block content %}
 {% if request.session.is_login %}
 {% ifequal request.session.type "competitor" %}
-<form>
+<form method="POST">
   <div class="form-group">
     <label for="Email">邮箱：</label>
-    <input type="email" class="form-control" id="Email" placeholder={{email}}>
+    <input type="email" class="form-control" name="Email" placeholder={{email}}>
   </div>
   <div class="form-group">
     <label for="Username">用户名：</label>
-    <input type="text" class="form-control" id="Username" placeholder={{username}}>
+    <input type="text" class="form-control" name="Username" placeholder={{username}}>
   </div>
   <div class="form-group">
     <label for="School">学校：</label>
-    <input type="text" class="form-control" id="School" placeholder={{school}}>
+    <input type="text" class="form-control" name="School" placeholder={{school}}>
   </div>
   <div class="form-group">
     <label for="Studentnumber">学号：</label>
-    <input type="text" class="form-control" id="Studentnumber" placeholder={{studentnumber}}>
+    <input type="text" class="form-control" name="Studentnumber" placeholder={{studentnumber}}>
   </div>
   <div class="form-group">
     <label for="Studentnumber">年级：</label>
-    <select class="selectpicker show-tick" id="Grade" data-live-search="true" placeholder={{grade}}>
+    <select class="selectpicker show-tick" name="Grade" data-live-search="true" placeholder={{grade}}>
       <option>大一</option>
       <option>大二</option>
       <option>大三</option>
