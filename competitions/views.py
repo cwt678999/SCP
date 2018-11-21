@@ -18,7 +18,7 @@ def competition_list(request):
             first_stage = CompetitionStageInfo.objects.get(competition_id=comp.id, stage_index=1)
             comp_dict = {
                 'name': comp.name,
-                'organizer': organizer.name
-                'start_time': first_stage
+                'organizer': organizer.name,
+                'start_time': first_stage,
             }
     pass
