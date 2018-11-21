@@ -40,13 +40,13 @@ def login_view(request):
                 else:
                     user = authenticate(username = name,
                                         password = pwd)
-                    login(request, user)
+                    #login(request, user)
                     login_user = UserLogin.objects.get(username = name)
                     request.session['type'] = login_user.type
                     request.session['username'] = name
                     request.session['is_login'] = 1
 
-                    return render(request,'home.html')
+                    return render(request,'index.html')
 
         else:
             return render(request,'login.html',{'msg':"填写格式出错！"})

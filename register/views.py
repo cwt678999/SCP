@@ -26,12 +26,19 @@ def register(request):
             pwd2 = registerform.cleaned_data['password2']
             email = registerform.cleaned_data['email']
             user_type = registerform.cleaned_data['type']
-            if UserLogin.objects.filter(username = name ):
+            try:
+                UserLogin.objects.filter(username = name )
+
+            except:
                 return render(request, "register.html", {'registerform': registerform,
-                                                         'msg':"此用户名已存在"})
-            if CompetitorInfo.objects.filter(email = email) or OrganizerInfo.objects.filter(email = email):
-                return render(request, "register.html",{'registerform':registerform,
-                                                        'msg':"此邮箱已被注册！"})
+                                                         'msg': "此用户名已存在"})
+            try:
+                CompetitorInfo.objects.filter(email = email) or OrganizerInfo.objects.filter(email = email)
+
+            except:
+                return render(request, "register.html", {'registerform': registerform,
+                                                 'msg': "此邮箱已被注册！"})
+
             if pwd1 != pwd2:
                 return render(request,"register.html",{'registerform':registerform,
                                                        'msg':"两次输入的密码不一致！"})
@@ -39,6 +46,8 @@ def register(request):
                 pwd = hash_code(pwd1)
                 User.objects.create(username = name, password = pwd)
                 UserLogin.objects.create(username = name, password = pwd, type = user_type)
+                return render(request, "register.html", {'registerform': registerform,
+                                                         'msg': "注册成功！"})
 
         else:
             return render(request,"register.html",{'registerform':registerform,
