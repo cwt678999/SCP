@@ -1,0 +1,29 @@
+{% extends 'minibase.html' %}
+{% load staticfiles %}
+{% block title %}赛事主页{% endblock %}
+{% block content %}
+<div class="row">
+  <div class="col-lg-2"></div>
+  <div class="col-lg-8">
+	<p style="text-align:center"><img src="{{item.img.url}}" width="40%" alt="暂无图片"/></p>
+    <h2 style="text-align:center">{{competition.name}}</h2>
+    <p style="text-align:center">主办方：{{competition.organizer}}</p><br>
+	<p style="text-align:center">阶段数：{{competition.totalStageNum}}</p><br>
+	<ul style="text-align:center">
+    {% for item in childcompetitionlist %}
+      <div id="childcompetition">
+        <li>
+	      <p>{{item.name}}阶段时间：{{item.startDate}}-{{item.endDate}}</p>
+	    </li>
+      </div>
+    {% endfor %}
+    </ul>
+    <p style="text-align:center">{{item.description}}</p><br>
+	<form name="signupform" id="form1" method="post" action="/competition/id={{competition.id}}">
+	  <button type="submit" class="btn btn-lg btn-primary" style="width:40%">报名</button>
+	</form>
+	<input type="file">
+  </div>
+  <div class="col-lg-2"></div>
+</div>
+{% endblock %}

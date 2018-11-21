@@ -6,7 +6,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>{% block title %}模板{% endblock %}</title>
+<title>{% block title %}小模板{% endblock %}</title>
 <link href="{% static 'css/bootstrap-4.0.0.css' %}" rel="stylesheet" type="text/css">
 {% block css %}{% endblock %}
 <style type="text/css">
@@ -39,7 +39,6 @@
     <img src="{% static 'images/test.jpg' %}" width="100%" height="100%" alt="返回首页"/>
   </a>
 </div>
-{% block menu %}{% endblock %}
 {% block content %}{% endblock %}
 <script src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
 <script src="{% static 'js/popper.min.js' %}"></script>
