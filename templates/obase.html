@@ -5,7 +5,8 @@
 {% if request.session.is_login %}
 {% ifequal request.session.type "organizer" %}
 <div class="row">
-  <div class="col-lg-3">
+	<div class="col-lg-3"></div>
+	<div class="col-lg-9">
     <a href="/usercenter/info/">
 		<button type="button" class="btn btn-lg btn-info btn-block">个人信息</button>
 	  </a><br><a href="/usercenter/mycompetition/">
