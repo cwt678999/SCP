@@ -3,7 +3,7 @@
 {% block title %}用户-个人信息{% endblock %}
 {% block content %}
 {% if request.session.is_login %}
-{% ifequal request.session.type "C" %}
+{% ifequal request.session.type "competitor" %}
 <form>
   <div class="form-group">
     <label for="Email">邮箱：</label>
