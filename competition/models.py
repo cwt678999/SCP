@@ -10,7 +10,6 @@ class RootCompetition(models.Model):
     description = models.CharField(max_length = 1000)
     totalStageNum = models.IntegerField()
     members = models.ManyToManyField(CompetitorInfo)
-    def getCurrentChildCompetition(self):
 
 
 class ChildCompetition(models.Model):
@@ -18,5 +17,4 @@ class ChildCompetition(models.Model):
     name = models.CharField(max_length = 20)
     startDate = models.DateTimeField()
     endDate = models.DateTimeField()
-    groups = models.ManyToManyField('group')
     file = models.ManyToManyField(File)
