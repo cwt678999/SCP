@@ -19,6 +19,7 @@ from django.conf.urls import include
 from django.contrib import admin
 from login.views import *
 from register.views import *
+
 urlpatterns = [
     url(r'^admin/?', admin.site.urls),
     url(r'^login/?', login_view, name="login_url"),
@@ -26,4 +27,6 @@ urlpatterns = [
     url(r'^captcha/?', include('captcha.urls')),
     url(r'^usercenter/?', include('user_center.urls')),
     url(r'^upload/?', include('upload.urls')),
+    url(r'^index/?', index_view, name = "home_url"),
+
 ]

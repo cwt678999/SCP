@@ -1,10 +1,10 @@
 
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.views.decorators.csrf import csrf_exempt,csrf_protect #Add this
-
+from competition.models import RootCompetition
 from login.forms import LoginForm
 from .models import UserLogin
 import hashlib
@@ -50,7 +50,16 @@ def login_view(request):
 
         else:
             return render(request,'login.html',{'msg':"填写格式出错！"})
-
+@csrf_exempt
+def index_view(request):
+    if request.method == "GET":
+        rootcompetition1 = RootCompetition()
+        rootcompetition1.name = "wdsad"
+        rootcompetition1.description = "sdasssss"
+        rootcompetition1.totalStageNum = 3
+        competitionlist=[]
+        competitionlist.append(rootcompetition1)
+        return render(request,"index.html",{'competitionlist':competitionlist})
 
 @login_required
 def logout_view(request):
