@@ -1,1 +1,4 @@
 .idea
+*.pyc
+*_initial.py
+db.sqlite3
