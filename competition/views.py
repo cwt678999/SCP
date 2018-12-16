@@ -4,13 +4,13 @@ from register.models import OrganizerInfo
 from upload.models import Image,File
 
 def createCompetition(request):
-    if request.method == "GET"
-        return render(requset,"createCompetition.html")
+    if request.method == "GET":
+        return render(request,"createCompetition.html")
 
     if request.methond == 'POST':
 
         organizer = OrganizerInfo.objects.get(name = request.session['username'])
-        rootname = requset.POST.get('rootname')
+        rootname = request.POST.get('rootname')
         description = request.POST.get('description')
         newimage = Image(
             image = request.FILES.get('img'),
@@ -30,7 +30,7 @@ def createCompetition(request):
             count = count + 1
         if count >=1 and organizer and rootname and description and newimage:
 
-            return render(requset, "createCompetition.html",{'msg':"success"})
+            return render(request, "createCompetition.html",{'msg':"success"})
         else:
             return render(request, "createCompetition.html",{'msg':"填写格式出错"})
 
