@@ -6,9 +6,8 @@ class CompetitorInfo(models.Model):
     userlogin = models.OneToOneField(UserLogin)
     email = models.EmailField()
     school = models.CharField(max_length=100)
-    studentnumber = models.IntegerField()
+    studentnumber = models.CharField(max_length=100)
     grade = models.CharField(max_length=10)
-    gradeid = models.IntegerField()
 
 class OrganizerInfo(models.Model):
     userlogin = models.OneToOneField(UserLogin)

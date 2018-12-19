@@ -1,12 +1,101 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from django.contrib.auth.decorators import login_required
 import json
 from django.http import HttpResponse
 from login.models import UserLogin
+from register.models import OrganizerInfo,CompetitorInfo
 from register.models import CompetitorInfo, OrganizerInfo
 
 # Create your views here.
-
+@login_required
+def organizerusercenter(request):
+    if request.method == "GET":
+        name = request.session['username']
+        if OrganizerInfo.objects.filter(name=name):
+            organizer = OrganizerInfo.objects.filter(name=name).first()
+            name = organizer.name
+            email = organizer.email
+        else:
+            name = ""
+            email = ""
+        return render(request, "user_center_info_organizer.html", {
+            'username': name,
+            'email': email
+        })
+    if request.method == "POST":
+        name = request.session['username']
+        username = request.POST['Username']
+        email = request.POST['Email']
+        userlogin = UserLogin.objects.get(username=name)
+        if OrganizerInfo.objects.filter(userlogin=userlogin):
+            competitor = OrganizerInfo.objects.filter(userlogin=userlogin).first()
+            competitor.name = username
+            competitor.email = email
+            competitor.save()
+        else:
+            competitor = OrganizerInfo.objects.create(name=username,
+                                                       email=email,
+                                                       userlogin=userlogin,
+                                                       )
+        return render(request, "user_center_competition_organizer.html", {
+            'username': username,
+            'email': email,
+        })
+@login_required
+def competitorusercenter(request):
+    if request.method == "GET":
+        name = request.session['username']
+        if CompetitorInfo.objects.filter(name = name):
+            competitor = CompetitorInfo.objects.filter(name = name).first()
+            name = competitor.name
+            email = competitor.email
+            school = competitor.school
+            studentnumber = competitor.studentnumber
+            grade = competitor.grade
+        else:
+            name =""
+            email=""
+            school=""
+            studentnumber=""
+            grade=""
+        return render(request,"user_center_info_competitor.html",{
+            'username':name,
+            'studentnumber':studentnumber,
+            'school':school,
+            'grade':grade,
+            'email':email
+        })
+    if request.method == "POST":
+        name = request.session['username']
+        username = request.POST['Username']
+        studentnumber = request.POST['Studentnumber']
+        school = request.POST['School']
+        email = request.POST['Email']
+        grade = request.POST['Grade']
+        userlogin = UserLogin.objects.get(username=name)
+        if CompetitorInfo.objects.filter(userlogin = userlogin):
+            competitor = CompetitorInfo.objects.filter(userlogin=userlogin).first()
+            competitor.name = username
+            competitor.email = email
+            competitor.grade = grade
+            competitor.school = school
+            competitor.studentnumber = studentnumber
+            competitor.save()
+        else:
+            competitor = CompetitorInfo.objects.create(name = username,
+                                                       email = email,
+                                                       grade =grade,
+                                                       school=school,
+                                                       studentnumber=studentnumber,
+                                                       userlogin=userlogin,
+                                                       )
+        return render(request, "user_center_info_competitor.html", {
+            'username': username,
+            'studentnumber': studentnumber,
+            'school': school,
+            'grade': grade,
+            'email': email,
+        })
 @login_required
 def user_center_redirect(request):
     if request.method == 'GET':
@@ -23,6 +112,7 @@ def user_center_redirect(request):
             return HttpResponse(json.dumps(resp), content_type="application/json")
         resp = {'errorcode': 0, 'url': url, 'msg': 'success'}
         return HttpResponse(json.dumps(resp), content_type="application/json")
+
 
 @login_required
 def competitor_info(request):

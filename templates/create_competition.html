@@ -1,0 +1,44 @@
+{% extends 'obase.html' %}
+{% load staticfiles %}
+{% block title %}创建竞赛{% endblock %}
+{% block content %}
+{% if request.session.is_login %}
+{% ifequal request.session.type "organizer" %}
+<form name="competitionform" id="form1" method="POST" action="/create_competition">
+    <label for="rootname">竞赛名称：</label>
+    <input type="text" class="form-control" name="rootname">
+    <label for="rootdescription">竞赛详情：</label>
+    <input type="text" class="form-control" name="rootdescription">
+    <label for="rootimage">竞赛海报：</label>
+    <input type="file" class="form-control" name="rootimage">
+</form>
+  <button type="button" id="addchild">新增阶段</button>
+  <button type="submit" id="submitbtn" class="btn btn-primary btn-lg">确认提交</button>
+{% endifequal %}
+{% endif %} 
+{% endblock %}
+{% block js %}
+{% if request.session.is_login %}
+{% ifequal request.session.type "organizer" %}
+<script>
+  $(function(){
+    form=$("#form1");
+    form.append($("<label>阶段名称：<input name='name'/></label>"));
+    form.append($("<label>阶段详情：<input name='description'/></label>"));
+    form.append($("<label>开始日期：<input type='date' name='startdate'/></label>"));
+    form.append($("<label>截止日期：<input type='date' name='enddate'/></label><br>"));
+    $('#addchild').on('click', function(){
+      form=$("#form1");
+      form.append($("<label>阶段名称：<input name='name'/></label>"));
+      form.append($("<label>阶段详情：<input name='description'/></label>"));
+      form.append($("<label>开始日期：<input type='date' name='startdate'/></label>"));
+      form.append($("<label>截止日期：<input type='date' name='enddate'/></label><br>"));
+    });
+    $('#submitbtn').on('click', function(){
+      $("#form1").submit();
+    });
+  });
+</script>
+{% endifequal %}
+{% endif %} 
+{% endblock %}

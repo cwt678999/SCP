@@ -20,12 +20,12 @@
 <div class="row">
   <div class="col-lg-6"></div>
   <div class="col-lg-2">
-	<a href="/usercenter/">
+	<a href="/user_center_info_{{request.session.type}}">
 	  <p>{{ request.session.username }}</p>
 	</a>
   </div>
   <div class="col-lg-2">
-	<a href="/usercenter/">
+	<a href="/user_center_info_{{request.session.type}}">
       <img src="{% static 'images/ImgResponsive_Placeholder.png' %}" class="rounded-circle img-fluid" alt="Placeholder image" width="20%">
 	</a>
   </div>
@@ -36,12 +36,13 @@
 {% endif %}
 <div class="row">
   <a href="/index/">
-    <img src="{% static 'images/test.jpg' %}" width="100%" height="100%" alt="返回首页"/>
+    <img src="{% static 'images/test.jpg' %}" width="100%" alt="返回首页"/>
   </a>
 </div>
 {% block content %}{% endblock %}
 <script src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
 <script src="{% static 'js/popper.min.js' %}"></script>
 <script src="{% static 'js/bootstrap-4.0.0.js' %}"></script>
+{% block js %}{% endblock %}
 </body>
 </html>

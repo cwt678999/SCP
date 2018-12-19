@@ -44,8 +44,10 @@ def register(request):
                                                        'msg':"两次输入的密码不一致！"})
             else:
                 pwd = hash_code(pwd1)
-                User.objects.create(username = name, password = pwd)
-                UserLogin.objects.create(username = name, password = pwd, type = user_type)
+                User.objects.create_user(username = name, password = pwd)
+                user_login = UserLogin.objects.create(username = name, password = pwd, type = user_type)
+                if user_type == 'organizer':
+                    OrganizerInfo.objects.create(userlogin=user_login, email=email, name=name)
                 return render(request, "register.html", {'registerform': registerform,
                                                          'msg': "注册成功！"})
 

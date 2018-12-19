@@ -13,17 +13,21 @@
     {% for item in childcompetitionlist %}
       <div id="childcompetition">
         <li>
-	      <p>{{item.name}}阶段时间：{{item.startDate}}-{{item.endDate}}</p>
+	      <p>{{item.name}}阶段时间：{{item.startDate}}--{{item.endDate}}</p>
 	    </li>
       </div>
     {% endfor %}
     </ul>
     <p style="text-align:center">{{item.description}}</p><br>
+  {% if request.session.is_login %}
 	<form name="signupform" id="form1" method="post" action="/competition/id={{competition.id}}">
-	  <button type="submit" class="btn btn-lg btn-primary" style="width:40%">报名</button>
+	  <p style="text-align:center"><button type="submit" class="btn btn-lg btn-primary" style="width:30%">报名</button></p>
 	</form>
-	<input type="file">
+	<p style="text-align:center"><input type="file"></p>
   </div>
+  {% else %}
+  <p style="text-align:center"><button type="submit" class="btn btn-lg btn-primary" style="width:40%" disabled="disabled">请先登录</button></p>
+  {% endif %}
   <div class="col-lg-2"></div>
 </div>
 {% endblock %}

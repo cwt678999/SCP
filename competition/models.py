@@ -5,11 +5,11 @@ from upload.models import Image,File
 class RootCompetition(models.Model):
     organizer = models.ManyToManyField(OrganizerInfo)
     img = models.ManyToManyField(Image)
-    file = models.ManyToManyField(File)
+    #file = models.ManyToManyField(File)
     name = models.CharField(max_length = 20)
     description = models.CharField(max_length = 1000)
     totalStageNum = models.IntegerField()
-    members = models.ManyToManyField(CompetitorInfo)
+    #members = models.ManyToManyField(CompetitorInfo)
 
 
 class ChildCompetition(models.Model):
@@ -17,4 +17,4 @@ class ChildCompetition(models.Model):
     name = models.CharField(max_length = 20)
     startDate = models.DateTimeField()
     endDate = models.DateTimeField()
-    file = models.ManyToManyField(File)
+    description = models.CharField(max_length=1000)

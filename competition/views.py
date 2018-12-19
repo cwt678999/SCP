@@ -1,36 +1,109 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect,HttpResponse
 from .models import RootCompetition,ChildCompetition
 from register.models import OrganizerInfo
+from login.models import UserLogin
 from upload.models import Image,File
+from django.contrib.auth.decorators import login_required
+import datetime
+@login_required
+def myCompetition(request):
+    if request.method == "GET":
+        if request.session['type']=="competitor":
 
+            return render(request,"user_center_competition_competitor.html")
+
+        elif request.session['type']=="organizer":
+            comp_list = []
+            userlogin = UserLogin.objects.get(username=request.session['username'])
+            organizer = OrganizerInfo.objects.get(userlogin=userlogin)
+            my_comp = RootCompetition.objects.filter(organizer=organizer)
+            for comp in my_comp:
+                comp_info = {
+                    'id': comp.id,
+                    'name': comp.name,
+                    'organizer': organizer.name,
+                    'totalStageNum': comp.totalStageNum,
+                    'description': comp.description,
+                }
+                comp_list.append(comp_info)
+            return render(request, "user_center_competition_organizer.html",
+                          {'competitionlist':comp_list})
+@login_required
 def createCompetition(request):
-    if request.method == "GET"
-        return render(requset,"createCompetition.html")
+    if request.method == "GET":
+        return render(request,"create_competition.html")
 
-    if request.methond == 'POST':
-
-        organizer = OrganizerInfo.objects.get(name = request.session['username'])
-        rootname = requset.POST.get('rootname')
-        description = request.POST.get('description')
-        newimage = Image(
-            image = request.FILES.get('img'),
+    if request.method == "POST":
+        username = request.session['username']
+        userlogin = UserLogin.objects.filter(username=username)
+      #  try:
+      #      OrganizerInfo.objects.get(userlogin=userlogin)
+      #  except:
+      #      return HttpResponse("请完善个人信息")
+        organizer = OrganizerInfo.objects.get(userlogin=userlogin)
+        rootname = request.POST.get('rootname')
+        description = request.POST.get('rootdescription')
+        newimage = Image.objects.create(
+            image = request.FILES.get('rootimage'),
             username = request.session['username']
         )
-        newimage.save()
-        rootcompetition = RootCompetition.objects.create(name = rootname,
+
+        startdatelist = request.POST.getlist('startdate')
+        childnamelist = request.POST.getlist('name')
+        enddatelist = request.POST.getlist('enddate')
+        descriptionlist = request.POST.getlist('description')
+        len1=len(startdatelist)
+        len2=len(childnamelist)
+        len3=len(enddatelist)
+        len4=len(descriptionlist)
+        rootcompetition = RootCompetition.objects.create(
+                                                         name = rootname,
                                                          description = description,
-                                                         organizer = organizer,
-                                                         img = newimage,
+                                                         totalStageNum=1
                                                          )
-
+        rootcompetition.organizer.add(organizer)
+        rootcompetition.img.add(newimage)
         nid = rootcompetition.id
-        childcompetitions = request.POST.getlist('childcompetition')
-        count = 0
-        for item in childcompetitions:
-            count = count + 1
-        if count >=1 and organizer and rootname and description and newimage:
 
-            return render(requset, "createCompetition.html",{'msg':"success"})
+        if len1!=len2 or len2!=len3 or len3!=len4 or len4!=len1:
+            return render(request, "create_competition.html",{'msg':"填写格式出错"})
+
+        for i in range(0,1):
+            startdate = datetime.datetime.strptime(startdatelist[i], '%Y-%m-%d')
+            enddate = datetime.datetime.strptime(enddatelist[i], '%Y-%m-%d')
+            childcompetition = ChildCompetition.objects.create(root_id=nid,
+                                                               description=descriptionlist[i],
+                                                               name = childnamelist[i],
+                                                               startDate=startdate,
+                                                               endDate=enddate,
+                                                               )
+        if organizer and rootname and description and newimage:
+
+            return render(request, "create_competition.html",{'msg':"success"})
         else:
-            return render(request, "createCompetition.html",{'msg':"填写格式出错"})
+            return render(request, "create_competition.html",{'msg':"填写格式出错"})
 
+
+@login_required
+def competition_info(request):
+    if request.method == 'GET':
+        id = request.GET['id']
+        comp = RootCompetition.objects.get(id=id)
+        child_comp = ChildCompetition.objects.filter(root_id=id)
+        child_comp_list = []
+        for child in child_comp:
+            child_comp_list.append({
+                'name': child.name,
+                'startDate': child.startDate,
+                'endDate': child.endDate,
+            })
+        organizer = comp.organizer
+        comp_dict = {
+            'id': id,
+            'name': comp.name,
+            'organizer': organizer.name,
+            'totalStageNum': comp.totalStageNum,
+            'description': comp.description,
+            'childcompetitionlist': child_comp_list
+        }
+        return render(request, "competition.html",{'competition': comp_dict})

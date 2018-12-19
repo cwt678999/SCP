@@ -1,4 +1,4 @@
-
+from django.contrib.auth.models import User
 from django.shortcuts import render, redirect, HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
@@ -32,38 +32,36 @@ def login_view(request):
             pwd = form.cleaned_data['password']
             # authenticates user return None if doesn't exist
             if not UserLogin.objects.filter(username = name):
-                return render(request,'login.html',{'msg':"此用户不存在"})
+                return render(request,'login.html',{'loginform': form,'msg':"此用户不存在"})
             else:
                 pwd = hash_code(pwd)
-                if not UserLogin.objects.filter(password=pwd):
-                    return render(request,'login.html',{'msg':"密码错误！"})
+                login_user = UserLogin.objects.get(username=name)
+
+                if login_user.password != pwd:
+                    return render(request,'login.html',{'loginform': form,'msg':"密码错误！"})
                 else:
-                    user = authenticate(username = name,
-                                        password = pwd)
-                    #login(request, user)
-                    login_user = UserLogin.objects.get(username = name)
+                    user =authenticate(username=name,password=pwd)
+                    login(request, user)
                     request.session['type'] = login_user.type
                     request.session['username'] = name
                     request.session['is_login'] = 1
 
-                    return render(request,'index.html')
+                    competitionlist = RootCompetition.objects.all()
+                    return render(request, "index.html", {'competitionlist': competitionlist})
+
 
         else:
-            return render(request,'login.html',{'msg':"填写格式出错！"})
+            loginform = LoginForm()
+            return render(request,'login.html',{'msg':"填写格式出错！",'loginform':loginform})
 @csrf_exempt
 def index_view(request):
     if request.method == "GET":
-        rootcompetition1 = RootCompetition()
-        rootcompetition1.name = "wdsad"
-        rootcompetition1.description = "sdasssss"
-        rootcompetition1.totalStageNum = 3
-        competitionlist=[]
-        competitionlist.append(rootcompetition1)
+        competitionlist = RootCompetition.objects.all()
         return render(request,"index.html",{'competitionlist':competitionlist})
 
 @login_required
 def logout_view(request):
     logout(request)
-    messages.success(request, "Successfully logged out!")
-    return redirect("login_url")
+    request.session['is_login']=False
+    return redirect("home_url")
 

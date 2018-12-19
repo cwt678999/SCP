@@ -19,7 +19,8 @@ from django.conf.urls import include
 from django.contrib import admin
 from login.views import *
 from register.views import *
-
+from competition.views import *
+from user_center.views import *
 urlpatterns = [
     url(r'^admin/?', admin.site.urls),
     url(r'^login/?', login_view, name="login_url"),
@@ -28,5 +29,11 @@ urlpatterns = [
     url(r'^usercenter/?', include('user_center.urls')),
     url(r'^upload/?', include('upload.urls')),
     url(r'^index/?', index_view, name = "home_url"),
-
+    url(r'^create_competition/?', createCompetition, name="create_url"),
+    url(r'^user_center_info_organizer?$', organizerusercenter),
+    url(r'^user_center_info_competitor?$', competitorusercenter),
+    url(r'^logout?$',logout_view),
+    url(r'^usercenter/mycompetition/?', myCompetition),
+    url(r'^competition/', competition_info),
+    url(r'^$',index_view),
 ]
