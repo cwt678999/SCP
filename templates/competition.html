@@ -21,7 +21,12 @@
     <p style="text-align:center">{{item.description}}</p><br>
   {% if request.session.is_login %}
 	<form name="signupform" id="form1" method="post" action="/competition/id={{competition.id}}">
-	  <p style="text-align:center"><button type="submit" class="btn btn-lg btn-primary" style="width:30%">报名</button></p>
+      <input type="hidden" value={{competition.id}} name="comp_id"/>
+      {% if competition.isMember %}
+      <p style="text-align:center"><button type="submit" class="btn btn-lg btn-primary" style="width:30%" disabled="disabled">已报名</button></p>
+      {% else %}
+      <p style="text-align:center"><button type="submit" class="btn btn-lg btn-primary" style="width:30%">报名</button></p>
+      {% endif %}
 	</form>
 	<p style="text-align:center"><input type="file"></p>
   </div>

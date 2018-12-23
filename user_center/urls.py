@@ -7,7 +7,7 @@ from user_center.views import *
 __author__ = "Epsirom"
 
 urlpatterns = [
-    url(r'^$', user_center_redirect),
+    #url(r'^$', user_center_redirect),
     url(r'^organizer/info/?$', competitor_info),
     url(r'^competitor/info/?$', organizer_info),
     url(r'^judge/info/?$', judge_info),

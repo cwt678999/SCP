@@ -30,10 +30,10 @@ urlpatterns = [
     url(r'^upload/?', include('upload.urls')),
     url(r'^index/?', index_view, name = "home_url"),
     url(r'^create_competition/?', createCompetition, name="create_url"),
-    url(r'^user_center_info_organizer?$', organizerusercenter),
-    url(r'^user_center_info_competitor?$', competitorusercenter),
+    url(r'^usercenter/myinfo/?$', myInfo),
     url(r'^logout?$',logout_view),
     url(r'^usercenter/mycompetition/?', myCompetition),
+    #url(r'^usercenter/myteam/?', myTeam),
     url(r'^competition/', competition_info),
     url(r'^$',index_view),
 ]
