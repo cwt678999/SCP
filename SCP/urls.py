@@ -33,7 +33,7 @@ urlpatterns = [
     url(r'^usercenter/myinfo/?$', myInfo),
     url(r'^logout?$',logout_view),
     url(r'^usercenter/mycompetition/?', myCompetition),
-    #url(r'^usercenter/myteam/?', myTeam),
+    url(r'^usercenter/myteam/?', myTeam),
     url(r'^competition/', competition_info),
     url(r'^$',index_view),
 ]

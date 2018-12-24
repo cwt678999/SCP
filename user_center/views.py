@@ -45,9 +45,9 @@ def myInfo(request):
             })
     elif user_type == 'competitor':
         if request.method == "GET":
-            name = request.session['username']
-            if CompetitorInfo.objects.filter(name=name):
-                competitor = CompetitorInfo.objects.filter(name=name).first()
+            userlogin=UserLogin.objects.get(username=request.session['username'])
+            if CompetitorInfo.objects.filter(userlogin=userlogin):
+                competitor = CompetitorInfo.objects.filter(userlogin=userlogin).first()
                 name = competitor.name
                 email = competitor.email
                 school = competitor.school
@@ -167,3 +167,18 @@ def candidate_list(request):
             return HttpResponse(json.dumps(resp), content_type="application/json")
 
 
+@login_required
+def myTeam(request):
+    team_list=[]
+    userlogin = UserLogin.objects.get(username=request.session['username'])
+    my_team = userlogin.member.all()
+    for team in my_team:
+        team_info = {
+            'id': team.id,
+            'name': team.name,
+            'leader': team.leader.username,
+            'memberlist': team.members.all()
+        }
+        team_list.append(team_info)
+    return render(request, "user_center_team_competitor.html", {
+        'teamlist': team_list})
