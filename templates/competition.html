@@ -8,6 +8,7 @@
 	<p style="text-align:center"><img src="{{item.img.url}}" width="40%" alt="暂无图片"/></p>
     <h2 style="text-align:center">{{competition.name}}</h2>
     <p style="text-align:center">主办方：{{competition.organizer}}</p><br>
+    <p style="text-align:center">队伍最大人数：{{competition.maxmember}}</p><br>
 	<p style="text-align:center">阶段数：{{competition.totalStageNum}}</p><br>
 	<ul style="text-align:center">
     {% for item in childcompetitionlist %}
@@ -23,16 +24,34 @@
 	<form name="signupform" id="form1" method="post" action="/competition/id={{competition.id}}">
       <input type="hidden" value={{competition.id}} name="comp_id"/>
       {% if competition.isMember %}
-      <p style="text-align:center"><button type="submit" class="btn btn-lg btn-primary" style="width:30%" disabled="disabled">已报名</button></p>
+      <p style="text-align:center"><button type="button" class="btn btn-lg btn-primary" style="width:30%" disabled="disabled">已报名</button></p>
       {% else %}
       <p style="text-align:center"><button type="submit" class="btn btn-lg btn-primary" style="width:30%">报名</button></p>
       {% endif %}
+      {% ifequal competition.maxmember 1 %}
+      <p style="text-align:center"><button type="button" class="btn btn-lg btn-primary" style="width:30%" disabled="disabled">本竞赛不支持创建队伍</button></p>
+      {% else %}
+      {% if competition.inTeam %}
+      <p style="text-align:center"><button type="button" class="btn btn-lg btn-primary" style="width:30%" disabled="disabled">已有队伍</button></p>
+      {% else %}
+      <p style="text-align:center"><button type="button" class="btn btn-lg btn-primary" style="width:30%" id="create_team">创建队伍</button></p>
+      {% endif %}
+      {% endifequal %}
 	</form>
 	<p style="text-align:center"><input type="file"></p>
   </div>
   {% else %}
-  <p style="text-align:center"><button type="submit" class="btn btn-lg btn-primary" style="width:40%" disabled="disabled">请先登录</button></p>
+  <p style="text-align:center"><button type="button" class="btn btn-lg btn-primary" style="width:40%" disabled="disabled">请先登录</button></p>
   {% endif %}
   <div class="col-lg-2"></div>
 </div>
+<script>
+  $(function(){
+    $('#create_team').on('click', function(){
+     form = $("#form1");
+      form.action = "/create_team/";
+      form.submit();
+    });
+  });
+</script>
 {% endblock %}

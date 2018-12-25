@@ -1,0 +1,45 @@
+{% extends 'minibase.html' %}
+{% load staticfiles %}
+{% block title %}队伍主页{% endblock %}
+{% block content %}
+{% if request.session.is_login %}
+<div class="row">
+  <div class="col-lg-2"></div>
+  <div class="col-lg-8">
+    <h2 style="text-align:center">{{team.name}}</h2>
+    <p style="text-align:center">队长：{{team.leader}}</p><br>
+    <p style="text-align:center">所属竞赛：{{team.competition}}</p><br>
+	<p style="text-align:center">队员：</p>
+	<ul style="text-align:center">
+    {% for item in memberlist %}
+      <div id="members">
+        <li>
+	      <p>{{item.name}}</p>
+	    </li>
+      </div>
+    {% endfor %}
+    </ul>
+  {% if isLeader %}
+	<form name="changename" id="form1" method="post" action="/team/?id={{team.id}}">
+      <input type="hidden" value={{team.id}} name="team_id"/>
+      <label for="name">新队名：</label>
+      <input type="text" name="name" placeholder={{team.name}}>
+      <p style="text-align:center"><button type="submit" class="btn btn-lg btn-primary" style="width:30%">确定改名</button></p>
+	</form>
+  {% endif %}
+  {% else %}
+  <p style="text-align:center"><button type="button" class="btn btn-lg btn-primary" style="width:40%" disabled="disabled">请先登录</button></p>
+  {% endif %}
+  </div>
+  <div class="col-lg-2"></div>
+</div>
+<script>
+  $(function(){
+    $('#create_team').on('click', function(){
+     form = $("#form1");
+      form.action = "/create_team/";
+      form.submit();
+    });
+  });
+</script>
+{% endblock %}

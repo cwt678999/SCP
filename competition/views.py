@@ -1,5 +1,5 @@
-from django.shortcuts import render,redirect,HttpResponse
-from .models import RootCompetition,ChildCompetition
+from django.shortcuts import render, redirect, HttpResponse
+from .models import RootCompetition, ChildCompetition, Team
 from register.models import OrganizerInfo,CompetitorInfo
 from login.models import UserLogin
 from upload.models import Image,File
@@ -60,7 +60,7 @@ def createCompetition(request):
             image=request.FILES.get('rootimage'),
             username=request.session['username']
         )
-
+        maxmember = request.POST.get('maxmember')
         startdatelist = request.POST.getlist('startdate')
         childnamelist = request.POST.getlist('name')
         enddatelist = request.POST.getlist('enddate')
@@ -91,7 +91,6 @@ def createCompetition(request):
                                                                endDate=enddate,
                                                                )
         if userlogin and rootname and description and newimage:
-
             return render(request, "create_competition.html", {'msg': "success"})
         else:
             return render(request, "create_competition.html", {'msg': "填写格式出错"})
@@ -120,6 +119,7 @@ def competition_info(request):
             'organizer': organizer.name,
             'totalStageNum': comp.totalStageNum,
             'description': comp.description,
+            'maxmember': comp.maxmember,
             'childcompetitionlist': child_comp_list
         }
         return render(request, "competition.html",{'competition': comp_dict})
@@ -130,3 +130,48 @@ def competition_info(request):
         comp = RootCompetition.objects.get(id=comp_id)
         comp.members.add(user)
         return redirect('/competition/?id=%s' % comp_id)
+
+@login_required
+def createTeam(request):
+    if request.method == 'POST':
+        name = request.session['username']
+        user = UserLogin.objects.get(username=name)
+        name = name + "小队"
+        comp_id = request.POST.get('comp_id')
+        comp = RootCompetition.objects.get(id=comp_id)
+        team = Team.objects.create(leader=user, name=name, competition=comp)
+        team.members.add(user)
+        return redirect('/team/?id=%s' % team.id)
+
+
+@login_required
+def team_info(request):
+    if request.method == 'GET':
+        id = request.GET['id']
+        name = request.session['username']
+        team = Team.objects.get(id=id)
+        ismember = bool(team.members.filter(username=name))
+        isleader = bool(team.leader.filter(username=name))
+        members = team.members.all()
+        memberlist = []
+        for member in members:
+            memberlist.append({
+                'name': member.username,
+            })
+        team_dict = {
+            'isMember': ismember,
+            'isLeader': isleader,
+            'id': id,
+            'name': team.name,
+            'leader': team.leader.username,
+            'memberlist': memberlist
+        }
+        return render(request, "team.html", {'team': team_dict})
+    if request.method == 'POST':
+        name = request.session['username']
+        user = UserLogin.objects.get(username=name)
+        new_name = request.POST['name']
+        team_id = request.POST['team_id']
+        team = Team.objects.get(id=team_id)
+        team.name = new_name
+        return redirect('/team/?id=%s' % team_id)

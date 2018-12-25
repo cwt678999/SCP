@@ -13,6 +13,7 @@ class RootCompetition(models.Model):
     description = models.CharField(max_length=1000)
     totalStageNum = models.IntegerField()
     members = models.ManyToManyField(UserLogin, related_name='cuser')
+    maxmember = models.IntegerField()
 
 
 class ChildCompetition(models.Model):
@@ -27,3 +28,4 @@ class Team(models.Model):
     leader = models.ForeignKey(UserLogin, related_name='leader')
     name = models.CharField(max_length=20)
     members = models.ManyToManyField(UserLogin, related_name='member')
+    competition = models.ForeignKey(RootCompetition)
