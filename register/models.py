@@ -17,3 +17,7 @@ class OrganizerInfo(models.Model):
     email = models.EmailField()
     name = models.CharField(max_length=100)
 
+
+class JudgeInfo(models.Model):
+    userlogin = models.OneToOneField(UserLogin)
+    name = models.CharField(max_length=100)

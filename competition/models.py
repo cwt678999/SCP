@@ -7,7 +7,7 @@ from upload.models import Image, File
 
 class RootCompetition(models.Model):
     organizer = models.ManyToManyField(UserLogin, related_name='ouser')
-    img = models.ManyToManyField(Image)
+    img = models.ForeignKey(File, null=True)
     #file = models.ManyToManyField(File)
     name = models.CharField(max_length=20)
     description = models.CharField(max_length=1000)
