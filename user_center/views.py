@@ -286,3 +286,19 @@ def admin_authlist_deny(request):
             auth_organizer.authenticationstatus = 3
             auth_organizer.save()
             return redirect('/usercenter/admin/authlist/')
+
+
+@login_required
+def organizer_add_judge(request):
+    if request.method == 'POST':
+        user_type = request.session['type']
+        if user_type == 'superadmin':
+            adminname = request.POST['adminname']
+            password = request.POST['adminpwd']
+            pwd = hash_code(password)
+            admin = User.objects.filter(username = adminname)
+            if admin.count() > 0:
+                return redirect('/usercenter/superadmin/adminlist/')
+            User.objects.create_user(username = adminname, password = pwd)
+            user_login = UserLogin.objects.create(username = adminname, password = pwd, type = 'admin')
+            return redirect('/usercenter/superadmin/adminlist/')

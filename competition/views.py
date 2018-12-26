@@ -56,10 +56,11 @@ def createCompetition(request):
       #      return HttpResponse("请完善个人信息")
         rootname = request.POST.get('rootname')
         description = request.POST.get('rootdescription')
-        newimage = Image.objects.create(
-            image=request.FILES.get('rootimage'),
+        newimage = File.objects.create(
+            file=request.FILES.get('rootimage'),
             username=request.session['username']
         )
+        newimage.save()
         maxmember = request.POST.get('maxmember')
         startdatelist = request.POST.getlist('startdate')
         childnamelist = request.POST.getlist('name')
@@ -75,8 +76,9 @@ def createCompetition(request):
                                                          maxmember=maxmember,
                                                          totalStageNum=1
                                                          )
-        rootcompetition.organizer.add(userlogin)
-        rootcompetition.img.add(newimage)
+        rootcompetition.organizer =userlogin
+        rootcompetition.img = newimage
+        rootcompetition.save()
         nid = rootcompetition.id
 
         if len1 != len2 or len2 != len3 or len3 != len4 or len4 != len1:
