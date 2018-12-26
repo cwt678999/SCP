@@ -14,11 +14,11 @@
 	  <div class="row">
         <div class="col-lg-4"></div>
 		<div class="col-lg-8">
-	      <a href="/team/id={{item.id}}/">{{item.name}}</a>
+	      <a href="/team/?id={{item.id}}">{{item.name}}</a>
 	      <p>队长：{{item.leader}} 所属竞赛：{{item.competetion}}</p><br>
 	      <p>成员：</p>
           {% for member in item.memberlist %}
-             <p> {{member}}</p>
+             <p> {{member.username}}</p>
           {% endfor %}
 		</div>
 	  </div>

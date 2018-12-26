@@ -11,9 +11,9 @@ class RootCompetition(models.Model):
     #file = models.ManyToManyField(File)
     name = models.CharField(max_length=20)
     description = models.CharField(max_length=1000)
-    totalStageNum = models.IntegerField()
+    totalStageNum = models.IntegerField(default=1)
     members = models.ManyToManyField(UserLogin, related_name='cuser')
-    maxmember = models.IntegerField()
+    maxmember = models.IntegerField(default=1)
 
 
 class ChildCompetition(models.Model):
@@ -28,4 +28,4 @@ class Team(models.Model):
     leader = models.ForeignKey(UserLogin, related_name='leader')
     name = models.CharField(max_length=20)
     members = models.ManyToManyField(UserLogin, related_name='member')
-    competition = models.ForeignKey(RootCompetition)
+    comp = models.ForeignKey(RootCompetition, null=True, related_name='comp')

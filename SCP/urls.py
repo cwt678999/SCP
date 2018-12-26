@@ -35,6 +35,7 @@ urlpatterns = [
     url(r'^usercenter/mycompetition/?', myCompetition),
     url(r'^usercenter/myteam/?', myTeam),
     url(r'^competition/', competition_info),
+    url(r'^team_invite', team_invite),
     url(r'^team/', team_info),
     url(r'^logout?$', logout_view),
     url(r'^$', index_view),

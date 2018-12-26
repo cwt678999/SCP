@@ -72,6 +72,7 @@ def createCompetition(request):
         rootcompetition = RootCompetition.objects.create(
                                                          name=rootname,
                                                          description=description,
+                                                         maxmember=maxmember,
                                                          totalStageNum=1
                                                          )
         rootcompetition.organizer.add(userlogin)
@@ -99,6 +100,7 @@ def createCompetition(request):
 @login_required
 def competition_info(request):
     if request.method == 'GET':
+        username = request.session['username']
         id = request.GET['id']
         comp = RootCompetition.objects.get(id=id)
         child_comp = ChildCompetition.objects.filter(root_id=id)
@@ -112,8 +114,14 @@ def competition_info(request):
         organizer = comp.organizer
         name = request.session['username']
         ismember = bool(comp.members.filter(username=name))
+        teamlist = comp.comp.all()
+        inteam = False
+        for team in teamlist:
+            if team.members.filter(username=username):
+                inteam = True
         comp_dict = {
             'isMember': ismember,
+            'inTeam': inteam,
             'id': id,
             'name': comp.name,
             'organizer': organizer.name,
@@ -122,7 +130,7 @@ def competition_info(request):
             'maxmember': comp.maxmember,
             'childcompetitionlist': child_comp_list
         }
-        return render(request, "competition.html",{'competition': comp_dict})
+        return render(request, "competition.html", {'competition': comp_dict})
     if request.method == 'POST':
         name = request.session['username']
         user = UserLogin.objects.get(username=name)
@@ -136,10 +144,9 @@ def createTeam(request):
     if request.method == 'POST':
         name = request.session['username']
         user = UserLogin.objects.get(username=name)
-        name = name + "小队"
         comp_id = request.POST.get('comp_id')
         comp = RootCompetition.objects.get(id=comp_id)
-        team = Team.objects.create(leader=user, name=name, competition=comp)
+        team = Team.objects.create(leader=user, name=name+"小队", comp=comp)
         team.members.add(user)
         return redirect('/team/?id=%s' % team.id)
 
@@ -151,7 +158,7 @@ def team_info(request):
         name = request.session['username']
         team = Team.objects.get(id=id)
         ismember = bool(team.members.filter(username=name))
-        isleader = bool(team.leader.filter(username=name))
+        isleader = bool(team.leader.username == name)
         members = team.members.all()
         memberlist = []
         for member in members:
@@ -164,14 +171,58 @@ def team_info(request):
             'id': id,
             'name': team.name,
             'leader': team.leader.username,
+            'competition': team.comp.name,
             'memberlist': memberlist
         }
-        return render(request, "team.html", {'team': team_dict})
+        return render(request, "team.html", {'team': team_dict, 'msg': ''})
     if request.method == 'POST':
         name = request.session['username']
         user = UserLogin.objects.get(username=name)
-        new_name = request.POST['name']
+        team_name = request.POST['name']
         team_id = request.POST['team_id']
         team = Team.objects.get(id=team_id)
-        team.name = new_name
+        team.name = team_name
+        team.save()
         return redirect('/team/?id=%s' % team_id)
+
+
+@login_required
+def team_invite(request):
+    if request.method == 'POST':
+        team_id = request.POST['team_id']
+        name = request.session['username']
+        invited_name = request.POST['invited_name']
+        team = Team.objects.get(id=team_id)
+        user = UserLogin.objects.get(username=name)
+        if UserLogin.objects.filter(username=invited_name):
+            invited_user = UserLogin.objects.get(username=invited_name)
+            if invited_user.type == 'competitor':
+                if team.members.filter(username=invited_name):
+                    msg = '已在队内'
+                else:
+                    team.members.add(invited_user)
+                    msg = '邀请成功'
+            else:
+                msg = '无此学生用户'
+        else:
+            msg = '无此学生用户'
+        ismember = bool(team.members.filter(username=name))
+        isleader = bool(team.leader.username == name)
+        members = team.members.all()
+        memberlist = []
+        for member in members:
+            memberlist.append({
+                'name': member.username,
+            })
+        team_dict = {
+            'isMember': ismember,
+            'isLeader': isleader,
+            'id': team_id,
+            'name': team.name,
+            'leader': team.leader.username,
+            'competition': team.comp.name,
+            'memberlist': memberlist
+        }
+        return render(request, "team.html", {'team': team_dict, 'msg': msg})
+
+
