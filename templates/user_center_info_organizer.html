@@ -13,7 +13,23 @@
     <label for="Username">用户名：</label>
     <input type="text" class="form-control" name="Username" placeholder={{username}}>
   </div>
+  <div class="form-group">
+    <label for="authstatus">审核状态：</label>
+    {% ifequal authstatus 0 %}
+        <input type="text" class="form-control" name="authstatus" disabled="disabled" value='未申请'>
+    {% endifequal %}
+    {% ifequal authstatus 1 %}
+        <input type="text" class="form-control" name="authstatus" disabled="disabled" value='通过'>
+    {% endifequal %}
+    {% ifequal authstatus 2 %}
+        <input type="text" class="form-control" name="authstatus" disabled="disabled" value='审核中'>
+    {% endifequal %}
+    {% ifequal authstatus 3 %}
+        <input type="text" class="form-control" name="authstatus" disabled="disabled" value='不通过'>
+    {% endifequal %}
+  </div>
   <button type="submit" class="btn btn-primary">保存修改</button>
+  <button type="submit" class="btn btn-primary" formaction="/usercenter/organizer/auth/">申请审核</button>
 </form>
 {% endifequal %}
 {% endif %} 

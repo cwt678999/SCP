@@ -1,0 +1,38 @@
+{% extends 'abase.html' %}
+{% load staticfiles %}
+{% block title %}管理员-待审核组织{% endblock %}
+{% block content %}
+{% if request.session.is_login %}
+{% ifequal request.session.type "admin" %}
+<form method="POST">
+    <table border="1">
+    <tr>
+        <th>待审核组织</th>
+        <th>审核状态</th>
+        <th>选中</th>
+    </tr>
+    {% for organizer in authorganizerlist %}
+        <tr>
+          <td>{{organizer.name}}</td>
+          {% ifequal organizer.authstatus 0 %}
+          <td>未请求</td>
+          {% endifequal %}
+          {% ifequal organizer.authstatus 1 %}
+          <td>通过</td>
+          {% endifequal %}
+          {% ifequal organizer.authstatus 2 %}
+          <td>审核中</td>
+          {% endifequal %}
+          {% ifequal organizer.authstatus 3 %}
+          <td>不通过</td>
+          {% endifequal %}
+          <td><input type="radio" name="checked" value={{organizer.name}}></td>
+        </tr>
+    {% endfor %}
+    </table>
+  <button type="submit" class="btn btn-primary"  formaction="/usercenter/admin/authlist/pass/">通过</button>
+  <button type="submit" class="btn btn-primary"  formaction="/usercenter/admin/authlist/deny/">拒绝</button>
+</form>
+{% endifequal %}
+{% endif %} 
+{% endblock %}

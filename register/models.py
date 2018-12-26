@@ -16,4 +16,4 @@ class OrganizerInfo(models.Model):
     userlogin = models.OneToOneField(UserLogin)
     email = models.EmailField()
     name = models.CharField(max_length=100)
-
+    authenticationstatus = models.IntegerField(default=0)

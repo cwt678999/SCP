@@ -5,6 +5,15 @@ from django.http import HttpResponse
 from login.models import UserLogin
 from register.models import OrganizerInfo,CompetitorInfo
 from register.models import CompetitorInfo, OrganizerInfo
+from django.contrib.auth.models import User
+import hashlib
+from django.db.models import Q
+
+def hash_code(s, salt='mysite'):  # 加点盐
+    h = hashlib.sha256()
+    s += salt
+    h.update(s.encode())  # update方法只接收bytes类型
+    return h.hexdigest()
 
 # Create your views here.
 @login_required
@@ -17,12 +26,15 @@ def myInfo(request):
                 organizer = OrganizerInfo.objects.filter(name=name).first()
                 name = organizer.name
                 email = organizer.email
+                status = organizer.authenticationstatus
             else:
                 name = ""
                 email = ""
+                status = 0
             return render(request, "user_center_info_organizer.html", {
                 'username': name,
-                'email': email
+                'email': email,
+                'authstatus': status,
             })
         if request.method == "POST":
             name = request.session['username']
@@ -145,6 +157,18 @@ def organizer_info(request):
         return render(request, 'user_center_info_organizer.html')
 
 @login_required
+def organizer_auth(request):
+    if request.method == 'POST':
+        user_type = request.session['type']
+        if user_type == 'organizer':
+            username = request.session['username']
+            organizer = UserLogin.objects.get(username=username)
+            organizerinfo = organizer.organizerinfo
+            organizerinfo.authenticationstatus = 2
+            organizerinfo.save()
+            return redirect('/usercenter/myinfo/')
+
+@login_required
 def judge_info(request):
     pass
 
@@ -182,3 +206,83 @@ def myTeam(request):
         team_list.append(team_info)
     return render(request, "user_center_team_competitor.html", {
         'teamlist': team_list})
+
+@login_required
+def superadmin_adminlist(request):
+    if request.method == 'GET':
+        user_type = request.session['type']
+        if user_type == 'superadmin':
+            admin_list = []
+            admins = UserLogin.objects.filter(type='admin')
+            for admin in admins:
+                admin_brief_info = {
+                    'username': admin.username,
+                }
+                admin_list.append(admin_brief_info)
+            return render(request, "user_center_adminlist_superadmin.html", {
+                'adminlist': admin_list,
+            })
+
+@login_required
+def superadmin_add_admin(request):
+    if request.method == 'POST':
+        user_type = request.session['type']
+        if user_type == 'superadmin':
+            adminname = request.POST['adminname']
+            password = request.POST['adminpwd']
+            pwd = hash_code(password)
+            admin = User.objects.filter(username = adminname)
+            if admin.count() > 0:
+                return redirect('/usercenter/superadmin/adminlist/')
+            User.objects.create_user(username = adminname, password = pwd)
+            user_login = UserLogin.objects.create(username = adminname, password = pwd, type = 'admin')
+            return redirect('/usercenter/superadmin/adminlist/')
+
+@login_required
+def superadmin_delete_admin(request):
+    if request.method == 'POST':
+        user_type = request.session['type']
+        if user_type == 'superadmin':
+            adminname = request.POST['adminname']
+            User.objects.filter(username = adminname).delete()
+            UserLogin.objects.filter(username = adminname).delete()
+            return redirect('/usercenter/superadmin/adminlist/')
+
+@login_required
+def admin_authlist(request):
+    if request.method == 'GET':
+        user_type = request.session['type']
+        if user_type == 'admin':
+            auth_organizer_list = []
+            auth_organizers = OrganizerInfo.objects.filter(Q(authenticationstatus=2) | Q(authenticationstatus=3))
+            for organizer in auth_organizers:
+                organizer_info = {
+                    'name': organizer.name,
+                    'authstatus': organizer.authenticationstatus,
+                }
+                auth_organizer_list.append(organizer_info)
+            return render(request, "user_center_authlist_admin.html", {
+                'authorganizerlist': auth_organizer_list,
+            })
+
+@login_required
+def admin_authlist_pass(request):
+    if request.method == 'POST':
+        user_type = request.session['type']
+        if user_type == 'admin':
+            organizername = request.POST['checked']
+            auth_organizer = OrganizerInfo.objects.get(name=organizername)
+            auth_organizer.authenticationstatus = 1
+            auth_organizer.save()
+            return redirect('/usercenter/admin/authlist/')
+
+@login_required
+def admin_authlist_deny(request):
+    if request.method == 'POST':
+        user_type = request.session['type']
+        if user_type == 'admin':
+            organizername = request.POST['checked']
+            auth_organizer = OrganizerInfo.objects.get(name=organizername)
+            auth_organizer.authenticationstatus = 3
+            auth_organizer.save()
+            return redirect('/usercenter/admin/authlist/')
