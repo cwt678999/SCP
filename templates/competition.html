@@ -12,11 +12,10 @@
 	<p style="text-align:center">阶段数：{{competition.totalStageNum}}</p><br>
 	<ul style="text-align:center">
     {% for item in childcompetitionlist %}
-      <div id="childcompetition">
-        <li>
-	      <p>{{item.name}}阶段时间：{{item.startDate}}--{{item.endDate}}</p>
-	    </li>
-      </div>
+      <li>
+	    <p>{{item.name}}阶段时间：{{item.startDate}}--{{item.endDate}}</p><br>
+        <p>阶段详情：{{ item.description }}</p>
+	  </li>
     {% endfor %}
     </ul>
     <p style="text-align:center">{{item.description}}</p><br>
@@ -25,6 +24,13 @@
 	<form name="signupform" id="form1" method="post" action="/competition/?id={{competition.id}}">
       <input type="hidden" value={{competition.id}} name="comp_id"/>
       {% if competition.isMember %}
+      <form name="uploadform" id="uploadform1" method="post" enctype="multipart/form-data">
+        <input type="hidden" value={{competition.id}} name="comp_id"/>
+        <p style="text-align:center">
+            <input type="file" class="form-control" name="rootfile">
+            <button type="submit" formaction="/file_upload">提交</button>
+        </p>
+      </form>
       <p style="text-align:center"><button type="button" class="btn btn-lg btn-primary" style="width:30%" disabled="disabled">已报名</button></p>
       {% else %}
       <p style="text-align:center"><button type="submit" class="btn btn-lg btn-primary" style="width:30%">报名</button></p>
@@ -40,11 +46,8 @@
         <input type="hidden" value={{competition.id}} name="comp_id"/>
         <p style="text-align:center"><button type="submit" class="btn btn-lg btn-primary" style="width:30%">创建队伍</button></p>
       </form>
-
       {% endif %}
       {% endifequal %}
-
-	<p style="text-align:center"><input type="file"></p>
   </div>
   {% endifequal %}
   {% ifequal request.session.type "organizer" %}
@@ -73,6 +76,11 @@
     <button type="submit" class="btn btn-primary"  formaction="/organizer/cancel/">取消</button>
   </form>
   {% endif %}
+  {% endifequal %}
+  {% ifequal request.session.type "judge" %}
+      <a href="/scoring/?id={{ competition.id }}">
+		<button type="button" class="btn btn-lg btn-info btn-block">进入评分页面</button>
+	  </a><br>
   {% endifequal %}
   {% else %}
   <p style="text-align:center"><button type="button" class="btn btn-lg btn-primary" style="width:40%" disabled="disabled">请先登录</button></p>

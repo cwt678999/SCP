@@ -10,7 +10,7 @@ import datetime
 @login_required
 def myCompetition(request):
     if request.method == "GET":
-        if request.session['type']=="competitor":
+        if request.session['type'] == "competitor":
             comp_list = []
             userlogin = UserLogin.objects.get(username=request.session['username'])
             my_comp = userlogin.cuser.all()
@@ -19,7 +19,7 @@ def myCompetition(request):
                     'id': comp.id,
                     'name': comp.name,
                     'img': comp.img,
-                    'organizer': comp.organizer.all()[0].username,
+                    'organizer': comp.organizer.username,
                     'totalStageNum': comp.totalStageNum,
                     'description': comp.description,
                 }
@@ -27,7 +27,7 @@ def myCompetition(request):
             return render(request, "user_center_competition_competitor.html",
                           {'competitionlist': comp_list})
 
-        elif request.session['type']=="organizer":
+        elif request.session['type'] == "organizer":
             comp_list = []
             userlogin = UserLogin.objects.get(username=request.session['username'])
             my_comp = RootCompetition.objects.filter(organizer=userlogin)
@@ -36,14 +36,29 @@ def myCompetition(request):
                     'id': comp.id,
                     'name': comp.name,
                     'img': comp.img,
-                    'organizer': userlogin.username,
+                    'organizer': comp.organizer.username,
                     'totalStageNum': comp.totalStageNum,
                     'description': comp.description,
                 }
                 comp_list.append(comp_info)
             return render(request, "user_center_competition_organizer.html",
                           {'competitionlist':comp_list})
-
+        elif request.session['type'] == "judge":
+            comp_list = []
+            userlogin = UserLogin.objects.get(username=request.session['username'])
+            my_comp = userlogin.juser.all()
+            for comp in my_comp:
+                comp_info = {
+                    'id': comp.id,
+                    'name': comp.name,
+                    'img': comp.img,
+                    'organizer': comp.organizer.username,
+                    'totalStageNum': comp.totalStageNum,
+                    'description': comp.description,
+                }
+                comp_list.append(comp_info)
+            return render(request, "user_center_competition_judge.html",
+                          {'competitionlist': comp_list})
 
 @login_required
 def createCompetition(request):
@@ -72,21 +87,19 @@ def createCompetition(request):
         len2 = len(childnamelist)
         len3 = len(enddatelist)
         len4 = len(descriptionlist)
+        if len1 != len2 or len2 != len3 or len3 != len4 or len4 != len1:
+            return render(request, "create_competition.html", {'msg': "填写格式出错"})
         rootcompetition = RootCompetition.objects.create(
                                                          name=rootname,
                                                          description=description,
                                                          maxmember=maxmember,
-                                                         totalStageNum=1
+                                                         totalStageNum=len1
                                                          )
-        rootcompetition.organizer =userlogin
+        rootcompetition.organizer = userlogin
         rootcompetition.img = newimage
         rootcompetition.save()
         nid = rootcompetition.id
-
-        if len1 != len2 or len2 != len3 or len3 != len4 or len4 != len1:
-            return render(request, "create_competition.html", {'msg': "填写格式出错"})
-
-        for i in range(0,1):
+        for i in range(0, len1):
             startdate = datetime.datetime.strptime(startdatelist[i], '%Y-%m-%d')
             enddate = datetime.datetime.strptime(enddatelist[i], '%Y-%m-%d')
             childcompetition = ChildCompetition.objects.create(root_id=nid,
@@ -103,9 +116,9 @@ def createCompetition(request):
 
 @login_required
 def competition_info(request):
+    username = request.session['username']
+    usertype = request.session['type']
     if request.method == 'GET':
-        username = request.session['username']
-        usertype = request.session['type']
         user = UserLogin.objects.get(username=username)
         id = request.GET['id']
         comp = RootCompetition.objects.get(id=id)
@@ -116,6 +129,7 @@ def competition_info(request):
                 'name': child.name,
                 'startDate': child.startDate,
                 'endDate': child.endDate,
+                'description': child.description
             })
         if usertype == 'competitor':
             ismember = bool(comp.members.filter(username=username))
@@ -136,6 +150,7 @@ def competition_info(request):
                 'maxmember': comp.maxmember,
                 'childcompetitionlist': child_comp_list
             }
+            return render(request, "competition.html", {'competition': comp_dict})
         elif usertype == 'organizer':
             isorganizer = bool(comp.organizer == user)
             comp_dict = {
@@ -158,14 +173,30 @@ def competition_info(request):
                     'status': bool(comp.judge.filter(username=name))
                 }
                 judge_list.append(judge_brief_info)
-        return render(request, "competition.html", {'competition': comp_dict, 'judgelist': judge_list})
+            return render(request, "competition.html", {'competition': comp_dict, 'judgelist': judge_list})
+        elif usertype == 'judge':
+            isjudge = bool(comp.judge.filter(username=username))
+            comp_dict = {
+                'isJudge': isjudge,
+                'id': id,
+                'name': comp.name,
+                'img': comp.img,
+                'organizer': comp.organizer.username,
+                'totalStageNum': comp.totalStageNum,
+                'description': comp.description,
+                'maxmember': comp.maxmember,
+                'childcompetitionlist': child_comp_list
+            }
+            return render(request, "competition.html", {'competition': comp_dict})
     if request.method == 'POST':
-        name = request.session['username']
-        user = UserLogin.objects.get(username=name)
-        comp_id = request.POST.get('comp_id')
-        comp = RootCompetition.objects.get(id=comp_id)
-        comp.members.add(user)
-        return redirect('/competition/?id=%s' % comp_id)
+        if usertype == 'competitor':
+            name = request.session['username']
+            user = UserLogin.objects.get(username=name)
+            comp_id = request.POST.get('comp_id')
+            comp = RootCompetition.objects.get(id=comp_id)
+            comp.members.add(user)
+            return redirect('/competition/?id=%s' % comp_id)
+
 
 @login_required
 def createTeam(request):
@@ -285,3 +316,45 @@ def organizer_cancel(request):
             if judgeinfo.creator == user and comp.organizer == user:
                 comp.judge.remove(judge)
         return redirect('/competition/?id=%s' % comp_id)
+
+
+@login_required
+def file_upload(request):
+    if request.method == 'POST':
+        user_type = request.session['type']
+        username = request.session['username']
+        comp_id = request.POST.get('comp_id')
+        if user_type == 'competitor':
+            newfile = File.objects.create(
+                file=request.FILES.get('rootfile'),
+                username=username
+            )
+            newfile.save()
+            comp = RootCompetition.objects.get(id=comp_id)
+            comp.file.add(newfile)
+            comp.save()
+        return redirect('/competition/?id=%s' % comp_id)
+
+
+@login_required
+def scoring(request):
+    user_type = request.session['type']
+    username = request.session['username']
+    if request.method == 'GET':
+        if user_type == 'judge':
+            id = request.GET['id']
+            comp = RootCompetition.objects.get(id=id)
+            if comp.judge.filter(username=username):
+                filelist = comp.file.all()
+                return render(request, 'scoring.html', {'filelist': filelist, 'comp_id': id})
+        return render('scoring.html')
+    if request.method == 'POST':
+        comp_id = request.POST.get('comp_id')
+        file_id = request.POST.get('file_id')
+        if user_type == 'judge':
+            comp = RootCompetition.objects.get(id=comp_id)
+            file = File.objects.get(id=file_id)
+            if comp.judge.filter(username=username):
+                file.score = request.POST.get('score')
+                file.save()
+        return redirect('/scoring/?id=%s' % comp_id)

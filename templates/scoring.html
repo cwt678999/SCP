@@ -1,0 +1,34 @@
+{% extends 'minibase.html' %}
+{% load staticfiles %}
+{% block title %}评分页面{% endblock %}
+{% block content %}
+<div class="row">
+  <div class="col-lg-2"></div>
+  <div class="col-lg-8">
+    <ul>
+    {% for item in filelist %}
+      <div id="filelist" style="border-style: inset">
+        <li>
+          <div class="row">
+            <div class="col-lg-8">
+              <p>文件名：{{item.name}} </p>
+              <button type="button" class="btn btn-primary"  formaction="/organizer/trust/">下载</button>
+              <p>提交者：{{item.username}}</p><br>
+            </div>
+            <div class="col-lg-4">
+              <form name="scoringform" id="form1" method="post">
+                <input type="hidden" value={{comp_id}} name="comp_id"/>
+                <input type="hidden" value={{item.id}} name="file_id"/>
+                <input type="text" name="score" style="text-align:center" value={{ item.score }}>
+                <button type="submit" class="btn btn-primary"  formaction="/scoring/">评分</button>
+              </form>
+            </div>
+          </div>
+        </li>
+      </div>
+    {% endfor %}
+    </ul>
+  </div>
+  <div class="col-lg-2"></div>
+</div>
+{% endblock %}

@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block title %}评委模板{% endblock %}
+{% block menu %}
+{% if request.session.is_login %}
+{% ifequal request.session.type "judge" %}
+<div class="row">
+  <div class="col-lg-3"></div>
+	<div class="col-lg-9">
+    <a href="/usercenter/mycompetition/">
+		<button type="button" class="btn btn-lg btn-info btn-block">竞赛列表</button>
+	  </a><br>
+  </div>
+</div>
+{% endifequal %}
+{% endif %} 
+{% endblock %}

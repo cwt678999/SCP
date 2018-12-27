@@ -109,8 +109,7 @@ def myInfo(request):
                 'email': email,
             })
     elif user_type == 'judge':
-        resp = {'errorcode': 1, 'msg': 'no permission'}
-        return HttpResponse(json.dumps(resp), content_type="application/json")
+        return render(request, "user_center_competition_judge.html")
     else:
         resp = {'errorcode': 1, 'msg': 'no permission'}
         return HttpResponse(json.dumps(resp), content_type="application/json")
@@ -315,10 +314,11 @@ def organizer_judgelist_add(request):
             name = request.POST['name']
             password = request.POST['pwd']
             pwd = hash_code(password)
-            judge = User.objects.filter(username=name)
+            judge = UserLogin.objects.filter(username=name)
             if judge.count() > 0:
                 return redirect('/usercenter/judgelist/')
             else:
+                User.objects.create_user(username=name, password=pwd)
                 user_login = UserLogin.objects.create(username=name, password=pwd, type='judge')
                 JudgeInfo.objects.create(userlogin=user_login, creator=user)
                 return redirect('/usercenter/judgelist/')
@@ -332,9 +332,11 @@ def organizer_judgelist_delete(request):
             name = request.POST['name']
             if UserLogin.objects.filter(username=name):
                 if UserLogin.objects.get(username=name).type == 'judge':
+                    u = User.objects.get(username=name)
                     judge = UserLogin.objects.get(username=name)
                     judgeinfo = JudgeInfo.objects.get(userlogin=judge)
                     if judgeinfo.creator == user:
                         judgeinfo.delete()
                         judge.delete()
+                        u.delete()
             return redirect('/usercenter/judgelist/')
