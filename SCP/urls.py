@@ -39,5 +39,7 @@ urlpatterns = [
     url(r'^team_invite', team_invite),
     url(r'^team/', team_info),
     url(r'^logout?$', logout_view),
+    url(r'^organizer/trust/?', organizer_trust),
+    url(r'^organizer/cancel/?', organizer_cancel),
     url(r'^$', index_view),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

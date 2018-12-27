@@ -20,5 +20,8 @@ urlpatterns = [
     url(r'^judge/info/?$', judge_info),
     url(r'^organizer/competition/list?$', organized_competition_list),
     url(r'^organizer/competition/list/candidate/list?$', candidate_list),
+    url(r'^judgelist/?$', organizer_judgelist),
+    url(r'^judgelist/add/?$', organizer_judgelist_add),
+    url(r'^judgelist/delete/?$', organizer_judgelist_delete),
 ]
 

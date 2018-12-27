@@ -5,7 +5,7 @@
 <div class="row">
   <div class="col-lg-2"></div>
   <div class="col-lg-8">
-	<p style="text-align:center"><img src="{{item.img.url}}" width="40%" alt="暂无图片"/></p>
+	<p style="text-align:center"><img src="{{ MEDIA_URL }}{{competition.img.file}}" width="100%" alt="暂无图片"/></p>
     <h2 style="text-align:center">{{competition.name}}</h2>
     <p style="text-align:center">主办方：{{competition.organizer}}</p><br>
     <p style="text-align:center">队伍最大人数：{{competition.maxmember}}</p><br>
@@ -21,6 +21,7 @@
     </ul>
     <p style="text-align:center">{{item.description}}</p><br>
   {% if request.session.is_login %}
+  {% ifequal request.session.type "competitor" %}
 	<form name="signupform" id="form1" method="post" action="/competition/?id={{competition.id}}">
       <input type="hidden" value={{competition.id}} name="comp_id"/>
       {% if competition.isMember %}
@@ -39,11 +40,40 @@
         <input type="hidden" value={{competition.id}} name="comp_id"/>
         <p style="text-align:center"><button type="submit" class="btn btn-lg btn-primary" style="width:30%">创建队伍</button></p>
       </form>
+
       {% endif %}
       {% endifequal %}
 
 	<p style="text-align:center"><input type="file"></p>
   </div>
+  {% endifequal %}
+  {% ifequal request.session.type "organizer" %}
+  {% if competition.isOrganizer %}
+	<form method="POST">
+    <input type="hidden" value={{competition.id}} name="comp_id"/>
+    <table border="1">
+    <tr>
+        <th>评委</th>
+        <th>状态</th>
+        <th>选中</th>
+    </tr>
+    {% for judge in judgelist %}
+        <tr>
+          <td>{{judge.username}}</td>
+          {% if judge.status %}
+          <td>已安排</td>
+          {% else %}
+          <td>未安排</td>
+          {% endif %}
+          <td><input type="radio" name="checked" value={{judge.username}}></td>
+        </tr>
+    {% endfor %}
+    </table>
+    <button type="submit" class="btn btn-primary"  formaction="/organizer/trust/">安排</button>
+    <button type="submit" class="btn btn-primary"  formaction="/organizer/cancel/">取消</button>
+  </form>
+  {% endif %}
+  {% endifequal %}
   {% else %}
   <p style="text-align:center"><button type="button" class="btn btn-lg btn-primary" style="width:40%" disabled="disabled">请先登录</button></p>
   {% endif %}

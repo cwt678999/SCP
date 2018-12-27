@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, HttpResponse
 from .models import RootCompetition, ChildCompetition, Team
-from register.models import OrganizerInfo,CompetitorInfo
+from register.models import OrganizerInfo, CompetitorInfo, JudgeInfo
 from login.models import UserLogin
 from upload.models import Image,File
 from django.contrib.auth.decorators import login_required
@@ -18,6 +18,7 @@ def myCompetition(request):
                 comp_info = {
                     'id': comp.id,
                     'name': comp.name,
+                    'img': comp.img,
                     'organizer': comp.organizer.all()[0].username,
                     'totalStageNum': comp.totalStageNum,
                     'description': comp.description,
@@ -34,6 +35,7 @@ def myCompetition(request):
                 comp_info = {
                     'id': comp.id,
                     'name': comp.name,
+                    'img': comp.img,
                     'organizer': userlogin.username,
                     'totalStageNum': comp.totalStageNum,
                     'description': comp.description,
@@ -103,6 +105,8 @@ def createCompetition(request):
 def competition_info(request):
     if request.method == 'GET':
         username = request.session['username']
+        usertype = request.session['type']
+        user = UserLogin.objects.get(username=username)
         id = request.GET['id']
         comp = RootCompetition.objects.get(id=id)
         child_comp = ChildCompetition.objects.filter(root_id=id)
@@ -113,26 +117,48 @@ def competition_info(request):
                 'startDate': child.startDate,
                 'endDate': child.endDate,
             })
-        organizer = comp.organizer
-        name = request.session['username']
-        ismember = bool(comp.members.filter(username=name))
-        teamlist = comp.comp.all()
-        inteam = False
-        for team in teamlist:
-            if team.members.filter(username=username):
-                inteam = True
-        comp_dict = {
-            'isMember': ismember,
-            'inTeam': inteam,
-            'id': id,
-            'name': comp.name,
-            'organizer': organizer.name,
-            'totalStageNum': comp.totalStageNum,
-            'description': comp.description,
-            'maxmember': comp.maxmember,
-            'childcompetitionlist': child_comp_list
-        }
-        return render(request, "competition.html", {'competition': comp_dict})
+        if usertype == 'competitor':
+            ismember = bool(comp.members.filter(username=username))
+            teamlist = comp.comp.all()
+            inteam = False
+            for team in teamlist:
+                if team.members.filter(username=username):
+                    inteam = True
+            comp_dict = {
+                'isMember': ismember,
+                'inTeam': inteam,
+                'id': id,
+                'name': comp.name,
+                'img': comp.img,
+                'organizer': comp.organizer.username,
+                'totalStageNum': comp.totalStageNum,
+                'description': comp.description,
+                'maxmember': comp.maxmember,
+                'childcompetitionlist': child_comp_list
+            }
+        elif usertype == 'organizer':
+            isorganizer = bool(comp.organizer == user)
+            comp_dict = {
+                'isOrganizer': isorganizer,
+                'id': id,
+                'name': comp.name,
+                'img': comp.img,
+                'organizer': comp.organizer.username,
+                'totalStageNum': comp.totalStageNum,
+                'description': comp.description,
+                'maxmember': comp.maxmember,
+                'childcompetitionlist': child_comp_list
+            }
+            judge_list = []
+            judges = user.creator.all()
+            for judge in judges:
+                name = judge.userlogin.username
+                judge_brief_info = {
+                    'username': name,
+                    'status': bool(comp.judge.filter(username=name))
+                }
+                judge_list.append(judge_brief_info)
+        return render(request, "competition.html", {'competition': comp_dict, 'judgelist': judge_list})
     if request.method == 'POST':
         name = request.session['username']
         user = UserLogin.objects.get(username=name)
@@ -228,3 +254,34 @@ def team_invite(request):
         return render(request, "team.html", {'team': team_dict, 'msg': msg})
 
 
+@login_required
+def organizer_trust(request):
+    if request.method == 'POST':
+        user_type = request.session['type']
+        username = request.session['username']
+        comp_id = request.POST.get('comp_id')
+        if user_type == 'organizer':
+            user = UserLogin.objects.get(username=username)
+            comp = RootCompetition.objects.get(id=comp_id)
+            judgename = request.POST['checked']
+            judge = UserLogin.objects.get(username=judgename)
+            judgeinfo = JudgeInfo.objects.get(userlogin=judge)
+            if judgeinfo.creator == user and comp.organizer == user:
+                comp.judge.add(judge)
+        return redirect('/competition/?id=%s' % comp_id)
+
+@login_required
+def organizer_cancel(request):
+    if request.method == 'POST':
+        user_type = request.session['type']
+        username = request.session['username']
+        comp_id = request.POST.get('comp_id')
+        if user_type == 'organizer':
+            user = UserLogin.objects.get(username=username)
+            comp = RootCompetition.objects.get(id=comp_id)
+            judgename = request.POST['checked']
+            judge = UserLogin.objects.get(username=judgename)
+            judgeinfo = JudgeInfo.objects.get(userlogin=judge)
+            if judgeinfo.creator == user and comp.organizer == user:
+                comp.judge.remove(judge)
+        return redirect('/competition/?id=%s' % comp_id)

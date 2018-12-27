@@ -3,8 +3,7 @@ from django.contrib.auth.decorators import login_required
 import json
 from django.http import HttpResponse
 from login.models import UserLogin
-from register.models import OrganizerInfo,CompetitorInfo
-from register.models import CompetitorInfo, OrganizerInfo
+from register.models import CompetitorInfo, OrganizerInfo, JudgeInfo
 from django.contrib.auth.models import User
 import hashlib
 from django.db.models import Q
@@ -193,7 +192,7 @@ def candidate_list(request):
 
 @login_required
 def myTeam(request):
-    team_list=[]
+    team_list = []
     userlogin = UserLogin.objects.get(username=request.session['username'])
     my_team = userlogin.member.all()
     for team in my_team:
@@ -289,16 +288,53 @@ def admin_authlist_deny(request):
 
 
 @login_required
-def organizer_add_judge(request):
+def organizer_judgelist(request):
+    if request.method == 'GET':
+        user_type = request.session['type']
+        user = UserLogin.objects.get(username=request.session['username'])
+        if user_type == 'organizer':
+            judge_list = []
+            judges = user.creator.all()
+            for judge in judges:
+                judge_brief_info = {
+                    'username': judge.userlogin.username,
+                    'complist': judge.userlogin.juser.all()
+                }
+                judge_list.append(judge_brief_info)
+            return render(request, "user_center_judgelist_organizer.html", {
+                'judgelist': judge_list,
+            })
+
+
+@login_required
+def organizer_judgelist_add(request):
     if request.method == 'POST':
         user_type = request.session['type']
-        if user_type == 'superadmin':
-            adminname = request.POST['adminname']
-            password = request.POST['adminpwd']
+        user = UserLogin.objects.get(username=request.session['username'])
+        if user_type == 'organizer':
+            name = request.POST['name']
+            password = request.POST['pwd']
             pwd = hash_code(password)
-            admin = User.objects.filter(username = adminname)
-            if admin.count() > 0:
-                return redirect('/usercenter/superadmin/adminlist/')
-            User.objects.create_user(username = adminname, password = pwd)
-            user_login = UserLogin.objects.create(username = adminname, password = pwd, type = 'admin')
-            return redirect('/usercenter/superadmin/adminlist/')
+            judge = User.objects.filter(username=name)
+            if judge.count() > 0:
+                return redirect('/usercenter/judgelist/')
+            else:
+                user_login = UserLogin.objects.create(username=name, password=pwd, type='judge')
+                JudgeInfo.objects.create(userlogin=user_login, creator=user)
+                return redirect('/usercenter/judgelist/')
+
+@login_required
+def organizer_judgelist_delete(request):
+    if request.method == 'POST':
+        user_type = request.session['type']
+        user = UserLogin.objects.get(username=request.session['username'])
+        if user_type == 'organizer':
+            name = request.POST['name']
+            if UserLogin.objects.filter(username=name):
+                if UserLogin.objects.get(username=name).type == 'judge':
+                    judge = UserLogin.objects.get(username=name)
+                    judgeinfo = JudgeInfo.objects.get(userlogin=judge)
+                    if judgeinfo.creator == user:
+                        judgeinfo.delete()
+                        judge.delete()
+            return redirect('/usercenter/judgelist/')

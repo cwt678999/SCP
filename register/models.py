@@ -21,4 +21,4 @@ class OrganizerInfo(models.Model):
 
 class JudgeInfo(models.Model):
     userlogin = models.OneToOneField(UserLogin)
-    name = models.CharField(max_length=100)
+    creator = models.ForeignKey(UserLogin, null=True, related_name='creator')

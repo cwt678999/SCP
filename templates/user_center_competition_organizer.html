@@ -10,7 +10,7 @@
     <li>
 	  <div class="row">
         <div class="col-lg-4">
-          <img src="{{item.img.url}}" width="30%" alt="暂无图片"/>
+          <img src="{{ MEDIA_URL }}{{item.img.file}}" width="60%" alt="暂无图片"/>
 		</div>
 		<div class="col-lg-8">
 	      <a href="/competition/?id={{item.id}}">{{item.name}}</a>
@@ -18,7 +18,7 @@
 	      <p>{{item.description}}</p><br>
 		</div>
 	  </div>
-	  </li>
+	</li>
   </div>
 {% endfor %}
 </ul>

@@ -9,11 +9,12 @@ class RootCompetition(models.Model):
     organizer = models.ForeignKey(UserLogin, null=True)
     img = models.ForeignKey(File, null=True)
     #file = models.ManyToManyField(File)
-    name = models.CharField(max_length=20)
+    name = models.CharField(max_length=50)
     description = models.CharField(max_length=1000)
     totalStageNum = models.IntegerField(default=1)
     members = models.ManyToManyField(UserLogin, related_name='cuser')
     maxmember = models.IntegerField(default=1)
+    judge = models.ManyToManyField(UserLogin, related_name='juser')
 
 
 class ChildCompetition(models.Model):

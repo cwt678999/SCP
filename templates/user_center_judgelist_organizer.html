@@ -1,0 +1,37 @@
+{% extends 'obase.html' %}
+{% load staticfiles %}
+{% block title %}主办方-管理评委{% endblock %}
+{% block content %}
+{% if request.session.is_login %}
+{% ifequal request.session.type "organizer" %}
+<table border="1">
+    <tr>
+        <th>评委用户名</th>
+        <th>所属竞赛</th>
+    </tr>
+{% for judge in judgelist %}
+    <tr>
+	  <td>{{judge.username}}</td>
+      <td>
+          {% for comp in judge.complist %}
+              <p>{{ comp.name }}；</p>
+              {% endfor %}
+      </td>
+	</tr>
+{% endfor %}
+</table>
+<form method="POST">
+  <div class="form-group">
+    <label for="name">评委用户名：</label>
+    <input type="text" class="form-control" name="name">
+  </div>
+  <div class="form-group">
+    <label for="pwd">评委密码：</label>
+    <input type="text" class="form-control" name="pwd">
+  </div>
+  <button type="submit" class="btn btn-primary" formaction="/usercenter/judgelist/add/">创建评委</button>
+  <button type="submit" class="btn btn-primary" formaction="/usercenter/judgelist/delete/">删除评委</button>
+</form>
+{% endifequal %}
+{% endif %} 
+{% endblock %}
