@@ -42,5 +42,7 @@ urlpatterns = [
     url(r'^organizer/trust/?', organizer_trust),
     url(r'^organizer/cancel/?', organizer_cancel),
     url(r'^scoring/', scoring),
+    url(r'^search/', searching),
+    url(r'^file_download/', file_download),
     url(r'^$', index_view),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

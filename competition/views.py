@@ -4,6 +4,9 @@ from register.models import OrganizerInfo, CompetitorInfo, JudgeInfo
 from login.models import UserLogin
 from upload.models import Image,File
 from django.contrib.auth.decorators import login_required
+from django.http import FileResponse
+from django.conf import settings
+from django.utils.http import urlquote
 import datetime
 
 
@@ -59,6 +62,7 @@ def myCompetition(request):
                 comp_list.append(comp_info)
             return render(request, "user_center_competition_judge.html",
                           {'competitionlist': comp_list})
+
 
 @login_required
 def createCompetition(request):
@@ -134,6 +138,13 @@ def competition_info(request):
                 'description': child.description
             })
         if usertype == 'competitor':
+            id = request.GET['id']
+            comp = RootCompetition.objects.get(id=id)
+            filelist = comp.file.all()
+            newfilelist = []
+            for item in filelist:
+                if item.username == username:
+                    newfilelist.append(item)
             ismember = bool(comp.members.filter(username=username))
             teamlist = comp.comp.all()
             inteam = False
@@ -152,7 +163,7 @@ def competition_info(request):
                 'maxmember': comp.maxmember,
                 'childcompetitionlist': child_comp_list
             }
-            return render(request, "competition.html", {'competition': comp_dict})
+            return render(request, "competition.html", {'filelist': newfilelist, 'competition': comp_dict})
         elif usertype == 'organizer':
             isorganizer = bool(comp.organizer == user)
             comp_dict = {
@@ -354,3 +365,28 @@ def scoring(request):
                 file.score = request.POST.get('score')
                 file.save()
         return redirect('/scoring/?id=%s' % comp_id)
+
+
+@login_required
+def searching(request):
+    if request.method == 'GET':
+        keyword = request.GET['keyword']
+        competitionlist = RootCompetition.objects.all()
+        newcompetitionlist = []
+        for item in competitionlist:
+            if item.name.find(keyword) >= 0:
+                newcompetitionlist.append(item)
+        return render(request, "searching.html", {'competitionlist': newcompetitionlist})
+
+
+@login_required
+def file_download(request):
+    if request.method == 'GET':
+        file_id = request.GET['id']
+        file = File.objects.get(id=file_id)
+        filename = urlquote(file.name)
+        dfile = open(settings.MEDIA_ROOT+'/'+file.file.name, 'rb')
+        response = FileResponse(dfile)
+        response['Content-Type'] = 'application/octet-stream'
+        response['Content-Disposition'] = 'attachment;filename=%s' % filename
+        return response

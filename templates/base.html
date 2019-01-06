@@ -107,7 +107,6 @@ text-align:right; }
 <div class="row">
   {% if request.session.is_login %}
     <div class="col-lg-3">
-    <button type="button" class="btn btn-lg btn-primary" style="width:100%">占位子用的</button>
   </div>
 
 {% else %}
@@ -129,8 +128,8 @@ text-align:right; }
     </div>
   </div>
   <div class="col-lg-4">
-	<form class="form-inline my-2 my-lg-0">
-	  <input class="form-control mr-sm-3" type="search" placeholder="请输入关键词" aria-label="Search">
+	<form class="form-inline my-2 my-lg-0" name="searchform" action="/search/">
+	  <input class="form-control mr-sm-3" type="search" placeholder="请输入关键词" aria-label="Search" name="keyword">
 	  <button class="btn btn-lg btn-outline-success my-2 my-sm-0" type="submit">搜索</button>
     </form>
   </div>

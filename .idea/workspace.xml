@@ -2,13 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="47242dda-b80b-45d3-ad2d-41b2c09b4970" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/templates/searching.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SCP/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/SCP/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/competition/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/competition/views.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/base.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/competition.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/competition.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/create_competition.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/create_competition.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/upload/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/upload/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/scoring.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/scoring.html" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -132,30 +133,30 @@
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="html" value="78" />
+          <entry key="html" value="82" />
           <entry key="jpg" value="1" />
-          <entry key="py" value="78" />
+          <entry key="py" value="82" />
           <entry key="sqlite3" value="2" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="HTML" value="78" />
+          <entry key="HTML" value="82" />
           <entry key="Image" value="1" />
           <entry key="PLAIN_TEXT" value="2" />
-          <entry key="Python" value="78" />
+          <entry key="Python" value="82" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="html" value="1844" />
-          <entry key="py" value="5075" />
+          <entry key="html" value="2092" />
+          <entry key="py" value="5647" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="HTML" value="1844" />
-          <entry key="Python" value="5075" />
+          <entry key="HTML" value="2092" />
+          <entry key="Python" value="5647" />
         </counts>
       </usages-collector>
     </session>
@@ -165,8 +166,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/SCP/urls.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="254">
-              <caret line="42" column="50" selection-start-line="42" selection-start-column="50" selection-end-line="42" selection-end-column="50" />
+            <state relative-caret-position="121">
+              <caret line="31" column="28" lean-forward="true" selection-start-line="31" selection-start-column="28" selection-end-line="31" selection-end-column="28" />
               <folding>
                 <element signature="e#627#659#0" expanded="true" />
               </folding>
@@ -175,54 +176,52 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/templates/competition.html">
+        <entry file="file://$PROJECT_DIR$/competition/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-50">
-              <caret line="69" column="79" selection-start-line="69" selection-start-column="79" selection-end-line="69" selection-end-column="79" />
+            <state relative-caret-position="204">
+              <caret line="372" column="29" selection-start-line="372" selection-start-column="29" selection-end-line="372" selection-end-column="29" />
               <folding>
-                <element signature="e#1330#1355#0#HTML" expanded="true" />
+                <element signature="e#0#59#0" expanded="true" />
+                <element signature="e#385#2675#0" />
+                <element signature="e#2729#5400#0" />
+                <element signature="e#5605#9825#0" />
+                <element signature="e#9322#9702#0" />
+                <element signature="e#9749#10891#0" />
+                <element signature="e#10940#12328#0" />
+                <element signature="e#12381#13039#0" />
+                <element signature="e#13092#13753#0" />
+                <element signature="e#14394#15308#0" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/templates/create_competition.html">
+        <entry file="file://$PROJECT_DIR$/templates/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="133">
-              <caret line="7" column="16" selection-start-line="7" selection-start-column="16" selection-end-line="7" selection-end-column="16" />
+            <state relative-caret-position="190">
+              <caret line="10" column="62" selection-start-line="10" selection-start-column="62" selection-end-line="10" selection-end-column="62" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/templates/scoring.html">
+        <entry file="file://$PROJECT_DIR$/templates/searching.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="183">
-              <caret line="13" column="28" selection-start-line="13" selection-start-column="28" selection-end-line="13" selection-end-column="28" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/upload/views.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state>
+            <state relative-caret-position="76">
+              <caret line="4" column="2" selection-start-line="4" selection-start-column="2" selection-end-line="4" selection-end-column="2" />
               <folding>
-                <element signature="e#0#35#0" expanded="true" />
+                <element signature="n#style#0;n#div#0;n#ul#0;n#!!top" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/competition/views.py">
+        <entry file="file://$PROJECT_DIR$/templates/base.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="228">
-              <caret line="201" column="34" selection-start-line="201" selection-start-column="34" selection-end-line="201" selection-end-column="34" />
-              <folding>
-                <element signature="e#0#59#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="266">
+              <caret line="131" column="110" selection-start-line="131" selection-start-column="110" selection-end-line="131" selection-end-column="110" />
             </state>
           </provider>
         </entry>
@@ -246,6 +245,7 @@
       <find>organizeru</find>
       <find>hash_code</find>
       <find>organ</find>
+      <find>add</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -273,7 +273,6 @@
         <option value="$PROJECT_DIR$/templates/sabase.html" />
         <option value="$PROJECT_DIR$/templates/user_center_adminlist_superadmin.html" />
         <option value="$PROJECT_DIR$/templates/user_center_info_organizer.html" />
-        <option value="$PROJECT_DIR$/templates/base.html" />
         <option value="$PROJECT_DIR$/templates/user_center_authlist_admin.html" />
         <option value="$PROJECT_DIR$/templates/abase.html" />
         <option value="$PROJECT_DIR$/SCP/settings.py" />
@@ -292,11 +291,13 @@
         <option value="$PROJECT_DIR$/user_center/views.py" />
         <option value="$PROJECT_DIR$/register/views.py" />
         <option value="$PROJECT_DIR$/templates/create_competition.html" />
+        <option value="$PROJECT_DIR$/upload/models.py" />
+        <option value="$PROJECT_DIR$/templates/scoring.html" />
         <option value="$PROJECT_DIR$/templates/competition.html" />
+        <option value="$PROJECT_DIR$/templates/base.html" />
         <option value="$PROJECT_DIR$/SCP/urls.py" />
         <option value="$PROJECT_DIR$/competition/views.py" />
-        <option value="$PROJECT_DIR$/templates/scoring.html" />
-        <option value="$PROJECT_DIR$/upload/models.py" />
+        <option value="$PROJECT_DIR$/templates/searching.html" />
       </list>
     </option>
   </component>
@@ -478,7 +479,6 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.23123324" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -500,7 +500,7 @@
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="right" id="SciView" order="3" />
-      <window_info anchor="right" id="Database" order="4" weight="0.32956383" />
+      <window_info anchor="right" id="Database" order="4" weight="0.32908848" />
     </layout>
     <layout-to-restore>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.22252011" />
@@ -569,9 +569,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/static/js/popper.min.js">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/static/images/Carousel_Placeholder.png">
       <provider selected="true" editor-type-id="images" />
     </entry>
@@ -640,13 +637,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/base.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="336">
-          <caret line="40" column="35" selection-start-line="40" selection-start-column="35" selection-end-line="40" selection-end-column="35" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/templates/abase.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="95">
@@ -663,13 +653,6 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/user_center/models.py">
       <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/SCP/settings.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="273">
-          <caret line="134" column="63" selection-start-line="134" selection-start-column="63" selection-end-line="134" selection-end-column="63" />
-        </state>
-      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/obase.html">
       <provider selected="true" editor-type-id="text-editor">
@@ -703,13 +686,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="304">
           <caret line="16" column="33" lean-forward="true" selection-start-line="16" selection-start-column="33" selection-end-line="16" selection-end-column="33" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="190">
-          <caret line="10" column="62" selection-start-line="10" selection-start-column="62" selection-end-line="10" selection-end-column="62" />
         </state>
       </provider>
     </entry>
@@ -766,13 +742,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/login/views.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="494">
-          <caret line="56" column="4" selection-start-line="56" selection-start-column="4" selection-end-line="56" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/user_center/urls.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="228">
@@ -810,20 +779,17 @@
     <entry file="file://$PROJECT_DIR$/upload/urls.py">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/SCP/urls.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="254">
-          <caret line="42" column="50" selection-start-line="42" selection-start-column="50" selection-end-line="42" selection-end-column="50" />
-          <folding>
-            <element signature="e#627#659#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/templates/user_center_competition_judge.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="164">
           <caret line="16" column="68" lean-forward="true" selection-start-line="16" selection-start-column="68" selection-end-line="16" selection-end-column="68" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/create_competition.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="133">
+          <caret line="7" column="16" selection-start-line="7" selection-start-column="16" selection-end-line="7" selection-end-column="16" />
         </state>
       </provider>
     </entry>
@@ -836,26 +802,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/competition.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-50">
-          <caret line="69" column="79" selection-start-line="69" selection-start-column="79" selection-end-line="69" selection-end-column="79" />
-          <folding>
-            <element signature="e#1330#1355#0#HTML" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/competition/views.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="228">
-          <caret line="201" column="34" selection-start-line="201" selection-start-column="34" selection-end-line="201" selection-end-column="34" />
-          <folding>
-            <element signature="e#0#59#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/upload/models.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="323">
@@ -863,17 +809,84 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/create_competition.html">
+    <entry file="file://$PROJECT_DIR$/SCP/settings.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="133">
-          <caret line="7" column="16" selection-start-line="7" selection-start-column="16" selection-end-line="7" selection-end-column="16" />
+        <state relative-caret-position="273">
+          <caret line="134" column="63" selection-start-line="134" selection-start-column="63" selection-end-line="134" selection-end-column="63" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/scoring.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="183">
-          <caret line="13" column="28" selection-start-line="13" selection-start-column="28" selection-end-line="13" selection-end-column="28" />
+        <state relative-caret-position="475">
+          <caret line="28" column="9" lean-forward="true" selection-start-line="7" selection-start-column="4" selection-end-line="28" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/base.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="266">
+          <caret line="131" column="110" selection-start-line="131" selection-start-column="110" selection-end-line="131" selection-end-column="110" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="190">
+          <caret line="10" column="62" selection-start-line="10" selection-start-column="62" selection-end-line="10" selection-end-column="62" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/login/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="221">
+          <caret line="58" column="8" lean-forward="true" selection-start-line="58" selection-start-column="8" selection-end-line="59" selection-end-column="79" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SCP/urls.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="121">
+          <caret line="31" column="28" lean-forward="true" selection-start-line="31" selection-start-column="28" selection-end-line="31" selection-end-column="28" />
+          <folding>
+            <element signature="e#627#659#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/competition/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="204">
+          <caret line="372" column="29" selection-start-line="372" selection-start-column="29" selection-end-line="372" selection-end-column="29" />
+          <folding>
+            <element signature="e#0#59#0" expanded="true" />
+            <element signature="e#385#2675#0" />
+            <element signature="e#2729#5400#0" />
+            <element signature="e#5605#9825#0" />
+            <element signature="e#9322#9702#0" />
+            <element signature="e#9749#10891#0" />
+            <element signature="e#10940#12328#0" />
+            <element signature="e#12381#13039#0" />
+            <element signature="e#13092#13753#0" />
+            <element signature="e#14394#15308#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/competition.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="128">
+          <caret line="38" column="85" lean-forward="true" selection-start-line="38" selection-start-column="85" selection-end-line="38" selection-end-column="85" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/searching.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="76">
+          <caret line="4" column="2" selection-start-line="4" selection-start-column="2" selection-end-line="4" selection-end-column="2" />
+          <folding>
+            <element signature="n#style#0;n#div#0;n#ul#0;n#!!top" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

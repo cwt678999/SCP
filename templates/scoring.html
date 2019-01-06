@@ -11,8 +11,7 @@
         <li>
           <div class="row">
             <div class="col-lg-8">
-              <p>文件名：{{item.name}} </p>
-              <button type="button" class="btn btn-primary"  formaction="/organizer/trust/">下载</button>
+              <p>文件名：<a href="/file_download/?id={{ item.id }}">{{item.name}} </a></p>
               <p>提交者：{{item.username}}</p><br>
             </div>
             <div class="col-lg-4">

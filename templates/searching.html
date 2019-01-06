@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block title %}主页{% endblock %}
+{% block content %}
+{% if competitionlist %}
+<ul>
+{% for item in competitionlist %}
+  <div id="competition" style="border-style: inset">
+    <li>
+	  <div class="row">
+        <div class="col-lg-4">
+          <img src="{{ MEDIA_URL }}{{item.img.file}}" width="60%" alt="暂无图片"/>
+		</div>
+		<div class="col-lg-8">
+	      <a href="/competition/?id={{item.id}}">{{item.name}}</a>
+	      <p>主办方：{{item.organizer.username}} {{item.totalStageNum}}阶段</p><br>
+	      <p>{{item.description}}</p><br>
+		</div>
+	  </div>
+	</li>
+  </div>
+{% endfor %}
+</ul>
+{% else %}
+    <p style="text-align:center">无相关竞赛</p>
+{% endif %}
+{% endblock %}

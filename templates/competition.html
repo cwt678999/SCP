@@ -30,6 +30,22 @@
          <input type="file" name="newfile">
          <button type="submit">提交</button>
       </p>
+      <ul>
+    {% for item in filelist %}
+      <div id="filelist" style="border-style: inset">
+        <li>
+          <div class="row">
+            <div class="col-lg-8">
+              <p>文件名：<a href="/file_download/?id={{ item.id }}">{{item.name}}</a></p>
+            </div>
+            <div class="col-lg-4">
+                <p >分数：{{ item.score }}</p>
+            </div>
+          </div>
+        </li>
+      </div>
+    {% endfor %}
+    </ul>
       <p style="text-align:center"><button type="button" class="btn btn-lg btn-primary" style="width:30%" disabled="disabled">已报名</button></p>
       {% else %}
       <p style="text-align:center"><button type="submit" class="btn btn-lg btn-primary" style="width:30%">报名</button></p>
