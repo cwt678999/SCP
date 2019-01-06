@@ -21,16 +21,15 @@
     <p style="text-align:center">{{item.description}}</p><br>
   {% if request.session.is_login %}
   {% ifequal request.session.type "competitor" %}
-	<form name="signupform" id="form1" method="post" action="/competition/?id={{competition.id}}">
+	<form name="signupform" id="form1" method="post" action="/competition/?id={{competition.id}}" enctype="multipart/form-data">
+    {% csrf_token %}
       <input type="hidden" value={{competition.id}} name="comp_id"/>
+      <input type="hidden" value={{competition.isMember}} name="isMember"/>
       {% if competition.isMember %}
-      <form name="uploadform" id="uploadform1" method="post" enctype="multipart/form-data">
-        <input type="hidden" value={{competition.id}} name="comp_id"/>
-        <p style="text-align:center">
-            <input type="file" class="form-control" name="rootfile">
-            <button type="submit" formaction="/file_upload">提交</button>
-        </p>
-      </form>
+      <p style="text-align:center">
+         <input type="file" name="newfile">
+         <button type="submit">提交</button>
+      </p>
       <p style="text-align:center"><button type="button" class="btn btn-lg btn-primary" style="width:30%" disabled="disabled">已报名</button></p>
       {% else %}
       <p style="text-align:center"><button type="submit" class="btn btn-lg btn-primary" style="width:30%">报名</button></p>

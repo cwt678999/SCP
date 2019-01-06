@@ -16,6 +16,7 @@ class Image(models.Model):
 
 
 class File(models.Model):
+    name = models.CharField(max_length=100, null=True)
     file = models.FileField(upload_to=getfilepath)
     username = models.CharField(max_length=20)
     score = models.IntegerField(default=0)

@@ -73,8 +73,10 @@ def createCompetition(request):
       #      return HttpResponse("请完善个人信息")
         rootname = request.POST.get('rootname')
         description = request.POST.get('rootdescription')
+        obj = request.FILES['rootimage']
         newimage = File.objects.create(
-            file=request.FILES.get('rootimage'),
+            name=obj.name,
+            file=obj,
             username=request.session['username']
         )
         newimage.save()
@@ -190,12 +192,24 @@ def competition_info(request):
             return render(request, "competition.html", {'competition': comp_dict})
     if request.method == 'POST':
         if usertype == 'competitor':
-            name = request.session['username']
-            user = UserLogin.objects.get(username=name)
-            comp_id = request.POST.get('comp_id')
+            username = request.session['username']
+            user = UserLogin.objects.get(username=username)
+            comp_id = request.POST['comp_id']
             comp = RootCompetition.objects.get(id=comp_id)
-            comp.members.add(user)
-            return redirect('/competition/?id=%s' % comp_id)
+            if request.POST['isMember']:
+                obj = request.FILES['newfile']
+                newfile = File.objects.create(
+                    name=obj.name,
+                    file=obj,
+                    username=username
+                )
+                newfile.save()
+                comp.file.add(newfile)
+                comp.save()
+                return redirect('/competition/?id=%s' % comp_id)
+            else:
+                comp.members.add(user)
+                return redirect('/competition/?id=%s' % comp_id)
 
 
 @login_required
@@ -315,24 +329,6 @@ def organizer_cancel(request):
             judgeinfo = JudgeInfo.objects.get(userlogin=judge)
             if judgeinfo.creator == user and comp.organizer == user:
                 comp.judge.remove(judge)
-        return redirect('/competition/?id=%s' % comp_id)
-
-
-@login_required
-def file_upload(request):
-    if request.method == 'POST':
-        user_type = request.session['type']
-        username = request.session['username']
-        comp_id = request.POST.get('comp_id')
-        if user_type == 'competitor':
-            newfile = File.objects.create(
-                file=request.FILES.get('rootfile'),
-                username=username
-            )
-            newfile.save()
-            comp = RootCompetition.objects.get(id=comp_id)
-            comp.file.add(newfile)
-            comp.save()
         return redirect('/competition/?id=%s' % comp_id)
 
 
